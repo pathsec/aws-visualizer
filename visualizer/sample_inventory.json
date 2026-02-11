@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "ingestion_time": "2026-02-11T12:00:00Z",
+    "regions_scanned": ["us-east-1", "us-west-2"],
+    "profile": "default",
+    "summary": {
+      "regions_with_resources": 2,
+      "total_regional_service_region_pairs": 10,
+      "total_errors": 3,
+      "global_services_collected": ["iam", "s3", "route53", "organizations", "cloudfront"]
+    }
+  },
+  "global_services": {
+    "iam": {
+      "users": [
+        {"UserName": "admin-user", "UserId": "AIDA1234", "Arn": "arn:aws:iam::123456789012:user/admin-user", "mfa_devices": [{"SerialNumber": "arn:aws:iam::123456789012:mfa/admin-user"}], "access_keys": [{"AccessKeyId": "AKIA1234", "Status": "Active"}], "attached_policies": [{"PolicyName": "AdministratorAccess", "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"}]},
+        {"UserName": "dev-user", "UserId": "AIDA5678", "Arn": "arn:aws:iam::123456789012:user/dev-user", "mfa_devices": [], "access_keys": [{"AccessKeyId": "AKIA5678", "Status": "Active"}], "attached_policies": [{"PolicyName": "PowerUserAccess", "PolicyArn": "arn:aws:iam::aws:policy/PowerUserAccess"}]}
+      ],
+      "roles": [
+        {"RoleName": "ecsTaskRole", "RoleId": "AROA1111", "Arn": "arn:aws:iam::123456789012:role/ecsTaskRole"},
+        {"RoleName": "lambda-exec-role", "RoleId": "AROA2222", "Arn": "arn:aws:iam::123456789012:role/lambda-exec-role"}
+      ],
+      "groups": [{"GroupName": "Developers", "GroupId": "AGPA1111"}],
+      "policies": [{"PolicyName": "CustomDeployPolicy", "PolicyId": "ANPA1111", "Arn": "arn:aws:iam::123456789012:policy/CustomDeployPolicy"}],
+      "account_summary": {"Users": 2, "Roles": 5},
+      "account_aliases": ["my-company"]
+    },
+    "s3": {
+      "buckets": [
+        {"Name": "my-app-assets", "encryption": {"ServerSideEncryptionConfiguration": {"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}}, "tagging": [{"Key": "env", "Value": "prod"}], "public_access_block": {"PublicAccessBlockConfiguration": {"BlockPublicAcls": true}}},
+        {"Name": "my-logs-bucket", "encryption": {}, "tagging": [{"Key": "env", "Value": "prod"}]},
+        {"Name": "dev-artifacts", "encryption": {}, "tagging": [{"Key": "env", "Value": "dev"}]}
+      ]
+    },
+    "route53": {
+      "hosted_zones": [
+        {"Id": "/hostedzone/Z1234", "Name": "example.com.", "record_sets": [
+          {"Name": "example.com.", "Type": "A", "AliasTarget": {"DNSName": "d111111abcdef8.cloudfront.net"}},
+          {"Name": "api.example.com.", "Type": "CNAME", "ResourceRecords": [{"Value": "my-alb-123.us-east-1.elb.amazonaws.com"}]}
+        ]}
+      ]
+    },
+    "organizations": {"organization": {}, "accounts": []},
+    "cloudfront": {
+      "distributions": [
+        {"Id": "E1ABCDEF", "DomainName": "d111111abcdef8.cloudfront.net", "Origins": {"Items": [{"DomainName": "my-app-assets.s3.amazonaws.com", "Id": "S3-my-app-assets"}]}, "Status": "Deployed"}
+      ]
+    }
+  },
+  "regional_services": {
+    "us-east-1": {
+      "ec2": {
+        "instances": [
+          {"Instances": [{"InstanceId": "i-0abc111", "InstanceType": "t3.large", "State": {"Name": "running"}, "Tags": [{"Key": "Name", "Value": "web-server-1"}], "VpcId": "vpc-aaa111", "SubnetId": "subnet-pub1", "SecurityGroups": [{"GroupId": "sg-web1", "GroupName": "web-sg"}], "PrivateIpAddress": "10.0.1.10", "PublicIpAddress": "54.1.2.3"}]},
+          {"Instances": [{"InstanceId": "i-0abc222", "InstanceType": "t3.medium", "State": {"Name": "running"}, "Tags": [{"Key": "Name", "Value": "web-server-2"}], "VpcId": "vpc-aaa111", "SubnetId": "subnet-pub2", "SecurityGroups": [{"GroupId": "sg-web1", "GroupName": "web-sg"}], "PrivateIpAddress": "10.0.2.10"}]},
+          {"Instances": [{"InstanceId": "i-0abc333", "InstanceType": "m5.xlarge", "State": {"Name": "running"}, "Tags": [{"Key": "Name", "Value": "app-server-1"}], "VpcId": "vpc-aaa111", "SubnetId": "subnet-priv1", "SecurityGroups": [{"GroupId": "sg-app1", "GroupName": "app-sg"}], "PrivateIpAddress": "10.0.3.10"}]},
+          {"Instances": [{"InstanceId": "i-0abc444", "InstanceType": "t3.micro", "State": {"Name": "running"}, "Tags": [{"Key": "Name", "Value": "bastion-host"}], "VpcId": "vpc-aaa111", "SubnetId": "subnet-pub1", "SecurityGroups": [{"GroupId": "sg-bastion", "GroupName": "bastion-sg"}], "PrivateIpAddress": "10.0.1.20", "PublicIpAddress": "54.1.2.4"}]},
+          {"Instances": [{"InstanceId": "i-0abc555", "InstanceType": "r5.large", "State": {"Name": "running"}, "Tags": [{"Key": "Name", "Value": "isolated-worker"}], "VpcId": "vpc-bbb222", "SubnetId": "subnet-iso1", "SecurityGroups": [{"GroupId": "sg-iso1", "GroupName": "isolated-sg"}], "PrivateIpAddress": "172.16.0.10"}]}
+        ],
+        "vpcs": [
+          {"VpcId": "vpc-aaa111", "CidrBlock": "10.0.0.0/16", "Tags": [{"Key": "Name", "Value": "main-vpc"}], "State": "available"},
+          {"VpcId": "vpc-bbb222", "CidrBlock": "172.16.0.0/16", "Tags": [{"Key": "Name", "Value": "isolated-vpc"}], "State": "available"}
+        ],
+        "subnets": [
+          {"SubnetId": "subnet-pub1", "VpcId": "vpc-aaa111", "CidrBlock": "10.0.1.0/24", "AvailabilityZone": "us-east-1a", "Tags": [{"Key": "Name", "Value": "public-1a"}], "MapPublicIpOnLaunch": true},
+          {"SubnetId": "subnet-pub2", "VpcId": "vpc-aaa111", "CidrBlock": "10.0.2.0/24", "AvailabilityZone": "us-east-1b", "Tags": [{"Key": "Name", "Value": "public-1b"}], "MapPublicIpOnLaunch": true},
+          {"SubnetId": "subnet-priv1", "VpcId": "vpc-aaa111", "CidrBlock": "10.0.3.0/24", "AvailabilityZone": "us-east-1a", "Tags": [{"Key": "Name", "Value": "private-1a"}], "MapPublicIpOnLaunch": false},
+          {"SubnetId": "subnet-iso1", "VpcId": "vpc-bbb222", "CidrBlock": "172.16.0.0/24", "AvailabilityZone": "us-east-1a", "Tags": [{"Key": "Name", "Value": "isolated-1a"}], "MapPublicIpOnLaunch": false}
+        ],
+        "security_groups": [
+          {"GroupId": "sg-web1", "GroupName": "web-sg", "VpcId": "vpc-aaa111", "IpPermissions": [{"FromPort": 80, "ToPort": 80, "IpProtocol": "tcp", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}, {"FromPort": 443, "ToPort": 443, "IpProtocol": "tcp", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}], "IpPermissionsEgress": [{"IpProtocol": "-1", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}]},
+          {"GroupId": "sg-app1", "GroupName": "app-sg", "VpcId": "vpc-aaa111", "IpPermissions": [{"FromPort": 8080, "ToPort": 8080, "IpProtocol": "tcp", "UserIdGroupPairs": [{"GroupId": "sg-web1"}]}], "IpPermissionsEgress": [{"IpProtocol": "-1", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}]},
+          {"GroupId": "sg-bastion", "GroupName": "bastion-sg", "VpcId": "vpc-aaa111", "IpPermissions": [{"FromPort": 22, "ToPort": 22, "IpProtocol": "tcp", "IpRanges": [{"CidrIp": "203.0.113.0/24"}]}], "IpPermissionsEgress": [{"IpProtocol": "-1", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}]},
+          {"GroupId": "sg-rds1", "GroupName": "rds-sg", "VpcId": "vpc-aaa111", "IpPermissions": [{"FromPort": 5432, "ToPort": 5432, "IpProtocol": "tcp", "UserIdGroupPairs": [{"GroupId": "sg-app1"}]}], "IpPermissionsEgress": []},
+          {"GroupId": "sg-iso1", "GroupName": "isolated-sg", "VpcId": "vpc-bbb222", "IpPermissions": [], "IpPermissionsEgress": [{"IpProtocol": "-1", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}]}
+        ],
+        "internet_gateways": [{"InternetGatewayId": "igw-aaa111", "Attachments": [{"VpcId": "vpc-aaa111", "State": "attached"}], "Tags": [{"Key": "Name", "Value": "main-igw"}]}],
+        "nat_gateways": [{"NatGatewayId": "nat-aaa111", "VpcId": "vpc-aaa111", "SubnetId": "subnet-pub1", "State": "available", "Tags": [{"Key": "Name", "Value": "main-nat"}]}],
+        "volumes": [
+          {"VolumeId": "vol-111", "Size": 100, "State": "in-use", "Attachments": [{"InstanceId": "i-0abc111"}], "Tags": [{"Key": "Name", "Value": "web-1-root"}]},
+          {"VolumeId": "vol-222", "Size": 50, "State": "in-use", "Attachments": [{"InstanceId": "i-0abc333"}], "Tags": [{"Key": "Name", "Value": "app-1-data"}]}
+        ],
+        "elastic_ips": [{"PublicIp": "54.1.2.3", "AllocationId": "eipalloc-111", "InstanceId": "i-0abc111"}, {"PublicIp": "54.1.2.4", "AllocationId": "eipalloc-222", "InstanceId": "i-0abc444"}],
+        "key_pairs": [{"KeyName": "prod-key", "KeyPairId": "key-111"}],
+        "snapshots": [],
+        "amis": [],
+        "network_interfaces": [],
+        "route_tables": [],
+        "vpc_endpoints": [],
+        "vpc_peering_connections": [{"VpcPeeringConnectionId": "pcx-aaa111", "RequesterVpcInfo": {"VpcId": "vpc-aaa111"}, "AccepterVpcInfo": {"VpcId": "vpc-bbb222"}, "Status": {"Code": "active"}}],
+        "transit_gateways": [],
+        "launch_templates": [],
+        "placement_groups": [],
+        "flow_logs": []
+      },
+      "rds": {
+        "db_instances": [
+          {"DBInstanceIdentifier": "prod-postgres", "DBInstanceClass": "db.r5.large", "Engine": "postgres", "DBInstanceStatus": "available", "Endpoint": {"Address": "prod-postgres.abc123.us-east-1.rds.amazonaws.com", "Port": 5432}, "VpcSecurityGroups": [{"VpcSecurityGroupId": "sg-rds1"}], "DBSubnetGroup": {"VpcId": "vpc-aaa111", "Subnets": [{"SubnetIdentifier": "subnet-priv1"}]}, "MultiAZ": true, "StorageEncrypted": true, "Tags": [{"Key": "Name", "Value": "prod-postgres"}]}
+        ],
+        "db_clusters": [],
+        "db_snapshots": [],
+        "db_subnet_groups": []
+      },
+      "lambda": {
+        "functions": [
+          {"FunctionName": "api-handler", "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:api-handler", "Runtime": "python3.11", "Role": "arn:aws:iam::123456789012:role/lambda-exec-role", "VpcConfig": {"VpcId": "vpc-aaa111", "SubnetIds": ["subnet-priv1"], "SecurityGroupIds": ["sg-app1"]}, "Tags": {"env": "prod"}, "event_source_mappings": [], "policy": {}},
+          {"FunctionName": "cron-cleanup", "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:cron-cleanup", "Runtime": "nodejs18.x", "Role": "arn:aws:iam::123456789012:role/lambda-exec-role", "VpcConfig": {}, "Tags": {"env": "prod"}, "event_source_mappings": [], "policy": {}}
+        ]
+      },
+      "ecs": {
+        "clusters": [
+          {"clusterArn": "arn:aws:ecs:us-east-1:123456789012:cluster/prod-cluster", "clusterName": "prod-cluster", "status": "ACTIVE", "registeredContainerInstancesCount": 3, "runningTasksCount": 5, "services": [
+            {"serviceName": "web-service", "serviceArn": "arn:aws:ecs:us-east-1:123456789012:service/prod-cluster/web-service", "status": "ACTIVE", "desiredCount": 2, "runningCount": 2, "launchType": "FARGATE", "networkConfiguration": {"awsvpcConfiguration": {"subnets": ["subnet-priv1"], "securityGroups": ["sg-app1"]}}}
+          ]}
+        ],
+        "task_definition_arns": ["arn:aws:ecs:us-east-1:123456789012:task-definition/web-task:5"]
+      },
+      "elb": {
+        "load_balancers_v2": [
+          {"LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/my-alb/abc123", "LoadBalancerName": "my-alb", "DNSName": "my-alb-123.us-east-1.elb.amazonaws.com", "Type": "application", "VpcId": "vpc-aaa111", "SecurityGroups": ["sg-web1"], "AvailabilityZones": [{"SubnetId": "subnet-pub1"}, {"SubnetId": "subnet-pub2"}], "State": {"Code": "active"}}
+        ],
+        "target_groups": [
+          {"TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/web-tg/abc123", "TargetGroupName": "web-tg", "Protocol": "HTTP", "Port": 80, "VpcId": "vpc-aaa111", "TargetType": "instance", "LoadBalancerArns": ["arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/my-alb/abc123"]}
+        ],
+        "classic_load_balancers": []
+      },
+      "cloudwatch": {
+        "alarms": [{"AlarmName": "HighCPU-web-1", "MetricName": "CPUUtilization", "Namespace": "AWS/EC2", "Dimensions": [{"Name": "InstanceId", "Value": "i-0abc111"}], "StateValue": "OK"}],
+        "dashboards": [{"DashboardName": "prod-overview"}]
+      },
+      "cloudwatch_logs": {
+        "log_groups": [{"logGroupName": "/aws/lambda/api-handler"}, {"logGroupName": "/ecs/prod-cluster"}]
+      },
+      "secrets_manager": {
+        "secrets": [{"Name": "prod/db-password", "ARN": "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/db-password-abc123"}]
+      },
+      "kms": {
+        "keys": [{"KeyId": "key-1111", "Arn": "arn:aws:kms:us-east-1:123456789012:key/key-1111", "Description": "Default master key", "KeyState": "Enabled"}]
+      },
+      "sns": {
+        "topics": [{"TopicArn": "arn:aws:sns:us-east-1:123456789012:alarm-notifications", "attributes": {"TopicArn": "arn:aws:sns:us-east-1:123456789012:alarm-notifications", "DisplayName": "Alarm Notifications"}, "subscriptions": []}]
+      },
+      "sqs": {
+        "queues": [{"url": "https://sqs.us-east-1.amazonaws.com/123456789012/task-queue", "attributes": {"QueueArn": "arn:aws:sqs:us-east-1:123456789012:task-queue", "ApproximateNumberOfMessages": "12"}}]
+      },
+      "api_gateway": {
+        "rest_apis": [{"id": "abc123", "name": "prod-api", "description": "Production API"}],
+        "http_websocket_apis": []
+      },
+      "cloudtrail": {
+        "trails": [{"Name": "main-trail", "S3BucketName": "my-logs-bucket", "IsMultiRegionTrail": true, "HomeRegion": "us-east-1"}]
+      },
+      "acm": {
+        "certificates": [{"CertificateArn": "arn:aws:acm:us-east-1:123456789012:certificate/cert-1111", "DomainName": "example.com", "Status": "ISSUED"}]
+      }
+    },
+    "us-west-2": {
+      "ec2": {
+        "instances": [
+          {"Instances": [{"InstanceId": "i-0def111", "InstanceType": "t3.medium", "State": {"Name": "running"}, "Tags": [{"Key": "Name", "Value": "dr-standby-1"}], "VpcId": "vpc-ccc333", "SubnetId": "subnet-dr1", "SecurityGroups": [{"GroupId": "sg-dr1", "GroupName": "dr-sg"}], "PrivateIpAddress": "10.1.1.10"}]}
+        ],
+        "vpcs": [
+          {"VpcId": "vpc-ccc333", "CidrBlock": "10.1.0.0/16", "Tags": [{"Key": "Name", "Value": "dr-vpc"}], "State": "available"}
+        ],
+        "subnets": [
+          {"SubnetId": "subnet-dr1", "VpcId": "vpc-ccc333", "CidrBlock": "10.1.1.0/24", "AvailabilityZone": "us-west-2a", "Tags": [{"Key": "Name", "Value": "dr-subnet-1"}]}
+        ],
+        "security_groups": [
+          {"GroupId": "sg-dr1", "GroupName": "dr-sg", "VpcId": "vpc-ccc333", "IpPermissions": [{"FromPort": 443, "ToPort": 443, "IpProtocol": "tcp", "IpRanges": [{"CidrIp": "10.0.0.0/8"}]}], "IpPermissionsEgress": [{"IpProtocol": "-1", "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}]}
+        ],
+        "internet_gateways": [],
+        "nat_gateways": [],
+        "volumes": [],
+        "elastic_ips": [],
+        "key_pairs": [],
+        "snapshots": [],
+        "amis": [],
+        "network_interfaces": [],
+        "route_tables": [],
+        "vpc_endpoints": [],
+        "vpc_peering_connections": [],
+        "transit_gateways": [],
+        "launch_templates": [],
+        "placement_groups": [],
+        "flow_logs": []
+      },
+      "lambda": {
+        "functions": [
+          {"FunctionName": "dr-failover-handler", "FunctionArn": "arn:aws:lambda:us-west-2:123456789012:function:dr-failover-handler", "Runtime": "python3.11", "Role": "arn:aws:iam::123456789012:role/lambda-exec-role", "VpcConfig": {"VpcId": "vpc-ccc333", "SubnetIds": ["subnet-dr1"], "SecurityGroupIds": ["sg-dr1"]}, "Tags": {"env": "dr"}, "event_source_mappings": [], "policy": {}}
+        ]
+      }
+    }
+  },
+  "errors": {
+    "global": [],
+    "regional": {
+      "us-east-1": [
+        {"resource": "guardduty:detectors", "code": "AccessDeniedException", "message": "not authorized"}
+      ]
+    }
+  }
+}
