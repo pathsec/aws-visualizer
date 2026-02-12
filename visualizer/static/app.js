@@ -180,6 +180,7 @@ async function init(){
     activeServices = new Set(filters.services);
     renderChips();
     renderLegend();
+    await renderSources();
 
     setLoadingText('Fetching graph data...');
     await loadGraph();
@@ -197,10 +198,18 @@ async function init(){
 // ============ GRAPH LOADING ============
 async function loadGraph(){
   var params = new URLSearchParams();
-  if(activeRegions.size < filters.regions.length)
+
+  // If no regions or services are active, send _none_ to get a blank canvas
+  if(activeRegions.size === 0){
+    params.set('regions','_none_');
+  } else if(activeRegions.size < filters.regions.length){
     params.set('regions',[...activeRegions].join(','));
-  if(activeServices.size < filters.services.length)
+  }
+  if(activeServices.size === 0){
+    params.set('services','_none_');
+  } else if(activeServices.size < filters.services.length){
     params.set('services',[...activeServices].join(','));
+  }
 
   var url = '/api/graph?' + params.toString();
   console.log('[aws-viz] Fetching: ' + url);
@@ -243,6 +252,8 @@ function buildCytoscape(data){
     minZoom: 0.1,
     maxZoom: 4,
     wheelSensitivity: 0.3,
+    pixelRatio: 2,
+    textureOnViewport: false,
     style: [
       // ── Default node with icon ──
       {
@@ -261,24 +272,24 @@ function buildCytoscape(data){
           'background-height': '60%',
           'background-image-opacity': 0.95,
           // Text
-          'font-size': '9px',
+          'font-size': '11px',
           'font-family': "'JetBrains Mono', monospace",
-          'font-weight': 500,
-          'color': '#c8d3e0',
+          'font-weight': 700,
+          'color': '#e8ecf2',
           'text-valign': 'bottom',
           'text-halign': 'center',
-          'text-margin-y': 7,
+          'text-margin-y': 8,
           'text-wrap': 'ellipsis',
-          'text-max-width': '95px',
+          'text-max-width': '100px',
           // Border
           'border-width': 2,
           'border-color': 'data(color)',
           'border-opacity': 0.5,
           'background-opacity': 0.9,
-          // Text bg
+          // Text bg — fully opaque for sharp text
           'text-background-color': '#0a0e17',
-          'text-background-opacity': 0.75,
-          'text-background-padding': '2px',
+          'text-background-opacity': 1,
+          'text-background-padding': '3px',
           'text-background-shape': 'roundrectangle',
           'overlay-padding': '4px',
           'z-index': 10,
@@ -290,7 +301,7 @@ function buildCytoscape(data){
         style: {
           'background-color': '#ef4444',
           'border-color': '#ef4444',
-          'font-size': '8px',
+          'font-size': '10px',
           'width': 22, 'height': 22,
         }
       },
@@ -304,10 +315,27 @@ function buildCytoscape(data){
           'target-arrow-shape': 'triangle',
           'curve-style': 'bezier',
           'arrow-scale': 0.7,
-          'opacity': 0.45,
-          'font-size': '7px',
+          'opacity': 0.5,
+          // Label — always present but hidden until zoom threshold
+          'label': 'data(label)',
+          'font-size': '10px',
           'font-family': "'JetBrains Mono', monospace",
-          'color': '#576577',
+          'font-weight': 700,
+          'color': '#c0cede',
+          'text-rotation': 'autorotate',
+          'text-margin-y': -12,
+          'text-background-color': '#0c1219',
+          'text-background-opacity': 1,
+          'text-background-padding': '4px',
+          'text-background-shape': 'roundrectangle',
+          'text-opacity': 0,
+        }
+      },
+      // ── Edges visible at zoom — toggled by zoom handler ──
+      {
+        selector: 'edge.show-label',
+        style: {
+          'text-opacity': 1,
         }
       },
       // ── Security flow dashed ──
@@ -316,8 +344,9 @@ function buildCytoscape(data){
         style: {
           'line-style': 'dashed',
           'line-dash-pattern': [6,3],
-          'width': 2,
-          'opacity': 0.7,
+          'width': 2.5,
+          'opacity': 0.75,
+          'color': '#fca5a5',
         }
       },
       // ── Selected ──
@@ -328,8 +357,8 @@ function buildCytoscape(data){
           'border-color': '#22d3ee',
           'background-opacity': 1,
           'z-index': 999,
-          'text-background-opacity': 0.9,
-          'font-size': '11px',
+          'text-background-opacity': 1,
+          'font-size': '13px',
         }
       },
       // ── Highlighted ──
@@ -346,11 +375,12 @@ function buildCytoscape(data){
         selector: '.highlighted-edge',
         style: {
           'width': 3,
-          'opacity': 0.9,
+          'opacity': 0.95,
           'z-index': 100,
-          'label': 'data(label)',
-          'text-rotation': 'autorotate',
-          'font-size': '8px',
+          'text-opacity': 1,
+          'font-size': '11px',
+          'color': '#f0f4f8',
+          'text-background-opacity': 1,
         }
       },
       // ── Faded ──
@@ -377,6 +407,25 @@ function buildCytoscape(data){
   cy.on('mouseover', 'node', function(){ document.getElementById('cy').style.cursor = 'pointer'; });
   cy.on('mouseout', 'node', function(){ document.getElementById('cy').style.cursor = 'default'; });
 
+  // Zoom-based edge label visibility
+  var EDGE_LABEL_ZOOM_THRESHOLD = 1.3;
+  var edgeLabelsVisible = false;
+
+  function updateEdgeLabels(){
+    var zoom = cy.zoom();
+    if(zoom >= EDGE_LABEL_ZOOM_THRESHOLD && !edgeLabelsVisible){
+      cy.edges().addClass('show-label');
+      edgeLabelsVisible = true;
+    } else if(zoom < EDGE_LABEL_ZOOM_THRESHOLD && edgeLabelsVisible){
+      cy.edges().removeClass('show-label');
+      edgeLabelsVisible = false;
+    }
+  }
+
+  cy.on('zoom', updateEdgeLabels);
+  // Also run once on init
+  updateEdgeLabels();
+
   console.log('[aws-viz] Cytoscape created, running layout...');
   runLayout();
 }
@@ -393,21 +442,6 @@ function runLayout(){
         idealEdgeLength:function(){return 100;},
         edgeElasticity:function(){return 100;},
         gravity:0.25, padding:40, randomize:true,
-      };
-      break;
-    case 'circle':
-      opts = {name:'circle',animate:true,animationDuration:500,padding:40};
-      break;
-    case 'concentric':
-      opts = {
-        name:'concentric', animate:true, animationDuration:500,
-        concentric: function(n){
-          var p = {'vpc':100,'subnet':90,'ec2-instance':80,'load-balancer':70,
-            'security-group':60,'rds-instance':50,'lambda-function':40,
-            'ecs-cluster':35,'ecs-service':30,'s3-bucket':20,'iam-user':10};
-          return p[n.data('type')] || 5;
-        },
-        levelWidth: function(){return 2;}, padding:40
       };
       break;
     case 'breadthfirst':
@@ -695,6 +729,98 @@ function updateCounts(){
 // ============ UTIL ============
 function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escAttr(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+// ============ DATA MANAGEMENT ============
+async function handleFileUpload(input){
+  var files = input.files;
+  if(!files || files.length === 0) return;
+
+  var formData = new FormData();
+  for(var i = 0; i < files.length; i++){
+    formData.append('file', files[i]);
+  }
+
+  try {
+    var resp = await fetch('/api/upload', {method:'POST', body:formData});
+    var result = await resp.json();
+    if(!resp.ok){
+      alert('Upload error: ' + (result.error || 'unknown'));
+      return;
+    }
+    console.log('[aws-viz] Uploaded:', result.added, '→', result.nodes, 'nodes');
+    await refreshAfterDataChange();
+  } catch(err){
+    alert('Upload failed: ' + err.message);
+  }
+  // Reset the file input so the same file can be re-uploaded
+  input.value = '';
+}
+
+async function clearAllData(){
+  try {
+    await fetch('/api/clear', {method:'POST'});
+    console.log('[aws-viz] All data cleared');
+    await refreshAfterDataChange();
+  } catch(err){
+    alert('Clear failed: ' + err.message);
+  }
+}
+
+async function removeSource(idx){
+  try {
+    var resp = await fetch('/api/remove_source', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({index: idx})
+    });
+    var result = await resp.json();
+    if(!resp.ok){
+      alert('Remove error: ' + (result.error || 'unknown'));
+      return;
+    }
+    console.log('[aws-viz] Removed:', result.removed);
+    await refreshAfterDataChange();
+  } catch(err){
+    alert('Remove failed: ' + err.message);
+  }
+}
+
+async function refreshAfterDataChange(){
+  // Re-fetch everything: filters, stats, sources, graph
+  var fResp = await fetch('/api/filters');
+  filters = await fResp.json();
+  var sResp = await fetch('/api/stats');
+  stats = await sResp.json();
+
+  activeRegions = new Set(filters.regions);
+  activeServices = new Set(filters.services);
+  renderChips();
+  renderStats();
+  renderLegend();
+  await renderSources();
+  await loadGraph();
+}
+
+async function renderSources(){
+  var el = document.getElementById('source-list');
+  if(!el) return;
+  try {
+    var resp = await fetch('/api/sources');
+    var sources = await resp.json();
+    if(sources.length === 0){
+      el.innerHTML = '<div class="source-empty">No data loaded</div>';
+      return;
+    }
+    el.innerHTML = sources.map(function(s, i){
+      return '<div class="source-item">' +
+        '<span class="source-name" title="'+escHtml(s.name)+'">'+escHtml(s.name)+'</span>' +
+        '<button class="source-remove" title="Remove" onclick="removeSource('+i+')">✕</button>' +
+        '</div>';
+    }).join('');
+  } catch(e){
+    el.innerHTML = '<div class="source-empty">Error loading sources</div>';
+  }
+}
 
 // ============ GO ============
 console.log('[aws-viz] app.js loaded, calling init()...');
