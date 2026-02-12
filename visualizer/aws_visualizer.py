@@ -31,6 +31,10 @@ SOURCES = []          # list of {"name": str, "inventory": dict, "loaded_at": st
 GRAPH = {"nodes": [], "edges": []}
 FILTERS = {"regions": [], "services": [], "types": []}
 STATS = {}
+# Pre-built indexes for fast filtering
+_NODE_BY_REGION = {}   # region -> [node, ...]
+_NODE_BY_SERVICE = {}  # service -> [node, ...]
+_EDGE_INDEX = {}       # source_id -> [edge, ...], target_id -> [edge, ...]
 
 
 def _merge_inventories():
@@ -43,6 +47,9 @@ def _merge_inventories():
         STATS = {"ingestion_time": "—", "regions_scanned": 0, "regions_active": 0,
                  "s3_buckets": 0, "iam_users": 0, "iam_roles": 0, "ec2_instances": 0,
                  "vpcs": 0, "lambda_functions": 0, "rds_instances": 0, "total_errors": 0}
+        _NODE_BY_REGION.clear()
+        _NODE_BY_SERVICE.clear()
+        _EDGE_INDEX.clear()
         return
 
     # Start with an empty combined inventory
@@ -114,7 +121,22 @@ def _merge_inventories():
     GRAPH = build_graph(combined)
     FILTERS = get_filters(GRAPH)
     STATS = compute_stats(combined)
+    _rebuild_indexes()
     print(f"[merge] {len(SOURCES)} source(s) → {len(GRAPH['nodes'])} nodes, {len(GRAPH['edges'])} edges")
+
+
+def _rebuild_indexes():
+    """Build lookup indexes for fast filtering."""
+    global _NODE_BY_REGION, _NODE_BY_SERVICE, _EDGE_INDEX
+    _NODE_BY_REGION = defaultdict(list)
+    _NODE_BY_SERVICE = defaultdict(list)
+    _EDGE_INDEX = defaultdict(list)
+    for n in GRAPH["nodes"]:
+        _NODE_BY_REGION[n["region"]].append(n)
+        _NODE_BY_SERVICE[n["service"]].append(n)
+    for e in GRAPH["edges"]:
+        _EDGE_INDEX[e["source"]].append(e)
+        _EDGE_INDEX[e["target"]].append(e)
 
 
 def load_inventory_file(path):
@@ -206,29 +228,56 @@ def api_graph():
     regions = request.args.get("regions", "")
     services = request.args.get("services", "")
 
-    # Empty string = no filter (show all). "_none_" = show nothing.
-    if regions == "_none_":
-        return jsonify({"nodes": [], "edges": []})
-    if services == "_none_":
+    if regions == "_none_" or services == "_none_":
         return jsonify({"nodes": [], "edges": []})
 
     region_filter = set(regions.split(",")) if regions else None
     service_filter = set(services.split(",")) if services else None
 
-    filtered_nodes = []
-    node_ids = set()
-    for n in GRAPH["nodes"]:
-        if region_filter and n["region"] not in region_filter:
-            continue
-        if service_filter and n["service"] not in service_filter:
-            continue
-        filtered_nodes.append(n)
-        node_ids.add(n["id"])
+    # Use indexes for fast filtering
+    if region_filter and service_filter:
+        # Intersect: get nodes matching both filters
+        region_nodes = set()
+        for r in region_filter:
+            for n in _NODE_BY_REGION.get(r, []):
+                region_nodes.add(n["id"])
+        node_ids = set()
+        filtered_nodes = []
+        for s in service_filter:
+            for n in _NODE_BY_SERVICE.get(s, []):
+                if n["id"] in region_nodes and n["id"] not in node_ids:
+                    filtered_nodes.append(n)
+                    node_ids.add(n["id"])
+    elif region_filter:
+        node_ids = set()
+        filtered_nodes = []
+        for r in region_filter:
+            for n in _NODE_BY_REGION.get(r, []):
+                if n["id"] not in node_ids:
+                    filtered_nodes.append(n)
+                    node_ids.add(n["id"])
+    elif service_filter:
+        node_ids = set()
+        filtered_nodes = []
+        for s in service_filter:
+            for n in _NODE_BY_SERVICE.get(s, []):
+                if n["id"] not in node_ids:
+                    filtered_nodes.append(n)
+                    node_ids.add(n["id"])
+    else:
+        filtered_nodes = GRAPH["nodes"]
+        node_ids = {n["id"] for n in filtered_nodes}
 
-    filtered_edges = [
-        e for e in GRAPH["edges"]
-        if e["source"] in node_ids and e["target"] in node_ids
-    ]
+    # Filter edges using index
+    seen_edges = set()
+    filtered_edges = []
+    for nid in node_ids:
+        for e in _EDGE_INDEX.get(nid, []):
+            eid = id(e)
+            if eid not in seen_edges and e["source"] in node_ids and e["target"] in node_ids:
+                filtered_edges.append(e)
+                seen_edges.add(eid)
+
     return jsonify({"nodes": filtered_nodes, "edges": filtered_edges})
 
 
