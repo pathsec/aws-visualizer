@@ -176,8 +176,8 @@ async function init(){
     stats = await sResp.json();
 
     renderStats();
-    activeRegions = new Set(filters.regions);
-    activeServices = new Set(filters.services);
+    activeRegions = new Set();
+    activeServices = new Set();
     renderChips();
     renderLegend();
     await renderSources();
@@ -224,13 +224,19 @@ async function loadGraph(){
 
 function buildCytoscape(data){
   var elements = [];
+  var nodeCount = data.nodes.length;
+  var isLarge = nodeCount > 500;
+  var isHuge = nodeCount > 2000;
+
+  console.log('[aws-viz] Building graph: ' + nodeCount + ' nodes (large=' + isLarge + ', huge=' + isHuge + ')');
+
   data.nodes.forEach(function(n){
     elements.push({group:'nodes',data:{
       id:n.id, label:n.label, type:n.type, region:n.region,
       service:n.service, metadata:n.metadata,
       color:typeColor(n.type),
       shape:typeShape(n.type),
-      size:getNodeSize(n.type),
+      size: isHuge ? Math.max(getNodeSize(n.type) - 8, 16) : getNodeSize(n.type),
       icon: typeIcon(n.type) || '',
     }});
   });
@@ -249,11 +255,15 @@ function buildCytoscape(data){
   cy = cytoscape({
     container: document.getElementById('cy'),
     elements: elements,
-    minZoom: 0.1,
+    minZoom: 0.05,
     maxZoom: 4,
     wheelSensitivity: 0.3,
-    pixelRatio: 2,
-    textureOnViewport: false,
+    // Performance: render at 2x for small graphs, 1x for huge to save GPU
+    pixelRatio: isHuge ? 1 : 2,
+    // Performance: use texture cache during pan/zoom for large graphs
+    textureOnViewport: isLarge,
+    hideEdgesOnViewport: isHuge,
+    hideLabelsOnViewport: isHuge,
     style: [
       // ── Default node with icon ──
       {
@@ -303,6 +313,19 @@ function buildCytoscape(data){
           'border-color': '#ef4444',
           'font-size': '10px',
           'width': 22, 'height': 22,
+        }
+      },
+      // ── Node labels hidden on large graphs until zoom ──
+      {
+        selector: 'node.hide-label',
+        style: {
+          'label': '',
+        }
+      },
+      {
+        selector: 'node.hide-label.show-node-label',
+        style: {
+          'label': 'data(label)',
         }
       },
       // ── Edges ──
@@ -407,12 +430,21 @@ function buildCytoscape(data){
   cy.on('mouseover', 'node', function(){ document.getElementById('cy').style.cursor = 'pointer'; });
   cy.on('mouseout', 'node', function(){ document.getElementById('cy').style.cursor = 'default'; });
 
-  // Zoom-based edge label visibility
+  // Zoom-based label visibility
   var EDGE_LABEL_ZOOM_THRESHOLD = 1.3;
+  var NODE_LABEL_ZOOM_THRESHOLD = isHuge ? 1.0 : (isLarge ? 0.6 : 0);
   var edgeLabelsVisible = false;
+  var nodeLabelsVisible = !isLarge; // start visible for small graphs
 
-  function updateEdgeLabels(){
+  // For large graphs, hide node labels by default
+  if(isLarge){
+    cy.nodes().addClass('hide-label');
+  }
+
+  function updateLabelsOnZoom(){
     var zoom = cy.zoom();
+
+    // Edge labels
     if(zoom >= EDGE_LABEL_ZOOM_THRESHOLD && !edgeLabelsVisible){
       cy.edges().addClass('show-label');
       edgeLabelsVisible = true;
@@ -420,11 +452,21 @@ function buildCytoscape(data){
       cy.edges().removeClass('show-label');
       edgeLabelsVisible = false;
     }
+
+    // Node labels on large graphs
+    if(NODE_LABEL_ZOOM_THRESHOLD > 0){
+      if(zoom >= NODE_LABEL_ZOOM_THRESHOLD && !nodeLabelsVisible){
+        cy.nodes().addClass('show-node-label');
+        nodeLabelsVisible = true;
+      } else if(zoom < NODE_LABEL_ZOOM_THRESHOLD && nodeLabelsVisible){
+        cy.nodes().removeClass('show-node-label');
+        nodeLabelsVisible = false;
+      }
+    }
   }
 
-  cy.on('zoom', updateEdgeLabels);
-  // Also run once on init
-  updateEdgeLabels();
+  cy.on('zoom', updateLabelsOnZoom);
+  updateLabelsOnZoom();
 
   console.log('[aws-viz] Cytoscape created, running layout...');
   runLayout();
@@ -434,28 +476,44 @@ function buildCytoscape(data){
 function runLayout(){
   if(!cy) return;
   var opts;
+  var n = cy.nodes().length;
+  var isLarge = n > 500;
+  var isHuge = n > 2000;
+
   switch(currentLayout){
     case 'cose':
       opts = {
-        name:'cose', animate:true, animationDuration:600,
-        nodeRepulsion:function(){return 8000;},
-        idealEdgeLength:function(){return 100;},
-        edgeElasticity:function(){return 100;},
-        gravity:0.25, padding:40, randomize:true,
+        name:'cose',
+        animate: !isHuge,
+        animationDuration: isLarge ? 300 : 600,
+        nodeRepulsion: function(){ return isHuge ? 20000 : (isLarge ? 12000 : 8000); },
+        idealEdgeLength: function(){ return isHuge ? 150 : (isLarge ? 120 : 100); },
+        edgeElasticity: function(){ return 100; },
+        gravity: isHuge ? 0.1 : 0.25,
+        padding: 40,
+        randomize: true,
+        numIter: isHuge ? 200 : (isLarge ? 500 : 1000),
+        fit: true,
       };
       break;
     case 'breadthfirst':
       opts = {
-        name:'breadthfirst', animate:true, animationDuration:500,
-        directed:true, padding:40, spacingFactor:1.2,
-        roots: cy.nodes().filter(function(n){
-          return n.data('type')==='vpc' || (n.indegree()===0 && n.outdegree()>0);
+        name:'breadthfirst',
+        animate: !isHuge,
+        animationDuration: isLarge ? 300 : 500,
+        directed:true, padding:40,
+        spacingFactor: isHuge ? 0.8 : 1.2,
+        roots: cy.nodes().filter(function(nd){
+          return nd.data('type')==='vpc' || (nd.indegree()===0 && nd.outdegree()>0);
         })
       };
       break;
     case 'grid':
       opts = {
-        name:'grid', animate:true, animationDuration:500, padding:40,
+        name:'grid',
+        animate: !isHuge,
+        animationDuration: isLarge ? 300 : 500,
+        padding:40,
         sort: function(a,b){
           var s = a.data('service').localeCompare(b.data('service'));
           return s!==0 ? s : a.data('type').localeCompare(b.data('type'));
@@ -465,7 +523,20 @@ function runLayout(){
     default:
       opts = {name:'cose',animate:true,animationDuration:600,padding:40};
   }
-  cy.layout(opts).run();
+
+  // Show a hint for very large layouts
+  if(isHuge){
+    setLoadingText('Computing layout for ' + n + ' nodes...');
+    document.getElementById('loading').classList.remove('hidden');
+    setTimeout(function(){
+      cy.layout(opts).run();
+      setTimeout(function(){
+        document.getElementById('loading').classList.add('hidden');
+      }, 500);
+    }, 50);
+  } else {
+    cy.layout(opts).run();
+  }
 }
 
 function setLayout(name, el){
@@ -675,8 +746,8 @@ function clearAllChips(group){
 }
 
 function resetAll(){
-  activeRegions = new Set(filters.regions);
-  activeServices = new Set(filters.services);
+  activeRegions = new Set();
+  activeServices = new Set();
   document.getElementById('search-input').value = '';
   renderChips(); loadGraph();
 }
@@ -792,8 +863,8 @@ async function refreshAfterDataChange(){
   var sResp = await fetch('/api/stats');
   stats = await sResp.json();
 
-  activeRegions = new Set(filters.regions);
-  activeServices = new Set(filters.services);
+  activeRegions = new Set();
+  activeServices = new Set();
   renderChips();
   renderStats();
   renderLegend();
