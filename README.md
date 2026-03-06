@@ -6,6 +6,15 @@ A web-based interactive graph visualization for AWS infrastructure data collecte
 ![Flask](https://img.shields.io/badge/flask-3.0%2B-green)
 ![Cytoscape.js](https://img.shields.io/badge/cytoscape.js-3.28-orange)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3c5b79f6-d96e-47af-bbf8-b3118d308406" alt="Sample GUI screenshot" width="100%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d670ea31-51b3-40c5-b559-1b925237f247" alt="Sample IAM analysis screenshot" width="100%" />
+</p>
+
+
 ---
 
 ## Quick Start
