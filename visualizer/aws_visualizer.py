@@ -14,6 +14,7 @@ import json
 import os
 import sys
 import datetime
+import urllib.request
 from collections import defaultdict
 
 from flask import Flask, jsonify, request, Response, send_from_directory
@@ -299,6 +300,234 @@ def api_node_detail(node_id):
                          if e["source"] == node_id or e["target"] == node_id]
             return jsonify({"node": n, "edges": connected})
     return jsonify({"error": "not found"}), 404
+
+
+# ── IAM Attack Path Analysis ──────────────────────────────────────────────
+# Permissions granted by well-known AWS managed policies (simplified but covers common escalation vectors)
+_WELL_KNOWN_MANAGED_POLICIES = {
+    "arn:aws:iam::aws:policy/AdministratorAccess": ["*"],
+    "arn:aws:iam::aws:policy/PowerUserAccess": ["*"],
+    "arn:aws:iam::aws:policy/IAMFullAccess": ["iam:*"],
+    "arn:aws:iam::aws:policy/IAMReadOnlyAccess": [
+        "iam:Get*", "iam:List*", "iam:Generate*"],
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess": ["ec2:*", "elasticloadbalancing:*",
+        "cloudwatch:*", "autoscaling:*"],
+    "arn:aws:iam::aws:policy/AWSLambdaFullAccess": ["lambda:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AWSLambda_FullAccess": ["lambda:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess": ["s3:*"],
+    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess": ["dynamodb:*"],
+    "arn:aws:iam::aws:policy/AmazonECS_FullAccess": ["ecs:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy": ["ec2:*", "elasticloadbalancing:*",
+        "autoscaling:*", "cloudwatch:*"],
+    "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess": ["codebuild:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AWSCodePipelineFullAccess": ["codepipeline:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AWSGlueServiceRole": ["glue:*", "s3:*", "ec2:*", "cloudwatch:*"],
+    "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess": ["sagemaker:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AWSDataPipelineFullAccess": ["datapipeline:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/AmazonRDSFullAccess": ["rds:*"],
+    "arn:aws:iam::aws:policy/CloudWatchFullAccess": ["cloudwatch:*", "logs:*"],
+    "arn:aws:iam::aws:policy/AWSCloudFormationFullAccess": ["cloudformation:*", "iam:PassRole"],
+    "arn:aws:iam::aws:policy/SecurityAudit": [
+        "acm:List*", "acm:Describe*", "cloudtrail:Get*", "cloudtrail:Describe*",
+        "cloudtrail:List*", "ec2:Describe*", "iam:Get*", "iam:List*",
+        "s3:GetBucketAcl", "s3:GetBucketPolicy", "s3:ListAllMyBuckets"],
+    "arn:aws:iam::aws:policy/ReadOnlyAccess": [
+        "ec2:Describe*", "s3:Get*", "s3:List*", "iam:Get*", "iam:List*",
+        "lambda:Get*", "lambda:List*", "rds:Describe*", "cloudwatch:Get*",
+        "cloudwatch:List*", "cloudwatch:Describe*"],
+}
+
+_PATHFINDING_PATHS = []
+_PATHFINDING_LOADED = False
+
+
+def _load_pathfinding_paths():
+    """Fetch and cache pathfinding.cloud paths at first call."""
+    global _PATHFINDING_PATHS, _PATHFINDING_LOADED
+    if _PATHFINDING_LOADED:
+        return _PATHFINDING_PATHS
+    try:
+        url = "https://pathfinding.cloud/paths.json"
+        req = urllib.request.Request(url, headers={"User-Agent": "aws-visualizer/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            _PATHFINDING_PATHS = json.loads(resp.read().decode())
+        print(f"[iam] Loaded {len(_PATHFINDING_PATHS)} pathfinding.cloud paths")
+    except Exception as e:
+        print(f"[iam] Could not load pathfinding.cloud paths: {e}")
+        _PATHFINDING_PATHS = []
+    _PATHFINDING_LOADED = True
+    return _PATHFINDING_PATHS
+
+
+def _get_all_iam_data():
+    """Return the IAM section from the first source that has it."""
+    for src in SOURCES:
+        iam_data = src["inventory"].get("global_services", {}).get("iam", {})
+        if iam_data:
+            return iam_data
+    return {}
+
+
+def _parse_policy_document(doc):
+    """Extract all Allow action strings (lowercased) from a policy document."""
+    if not doc:
+        return set()
+    perms = set()
+    statements = doc.get("Statement", [])
+    if isinstance(statements, dict):
+        statements = [statements]
+    for stmt in statements:
+        if stmt.get("Effect", "") != "Allow":
+            continue
+        actions = stmt.get("Action", [])
+        if isinstance(actions, str):
+            actions = [actions]
+        perms.update(a.lower() for a in actions)
+    return perms
+
+
+def _permission_covers(granted_lower, required_lower):
+    """Return True if a granted permission string covers the required permission."""
+    if granted_lower == "*":
+        return True
+    if granted_lower == required_lower:
+        return True
+    # Service-level wildcard: "iam:*" covers "iam:passrole"
+    if granted_lower.endswith(":*"):
+        service = granted_lower[:-2]
+        if required_lower.startswith(service + ":"):
+            return True
+    # Prefix wildcard used in ReadOnly policies: "iam:list*" covers "iam:listpolicies"
+    if "*" in granted_lower:
+        prefix = granted_lower.split("*")[0]
+        if required_lower.startswith(prefix):
+            return True
+    return False
+
+
+def _get_principal_permissions(node_id):
+    """Return the set of lowercased effective permissions for an IAM user or role node."""
+    iam_data = _get_all_iam_data()
+    perms = set()
+    policy_map = {p["Arn"]: p for p in iam_data.get("policies", [])}
+
+    def _apply_managed_policy(parn):
+        if parn in _WELL_KNOWN_MANAGED_POLICIES:
+            perms.update(a.lower() for a in _WELL_KNOWN_MANAGED_POLICIES[parn])
+        elif parn in policy_map:
+            perms.update(_parse_policy_document(policy_map[parn].get("document", {})))
+
+    if node_id.startswith("iam-user:"):
+        uid = node_id[9:]
+        user = next((u for u in iam_data.get("users", []) if u.get("UserId") == uid), None)
+        if user:
+            for ip in user.get("inline_policies", []):
+                perms.update(_parse_policy_document(ip.get("PolicyDocument", {})))
+            for ap in user.get("attached_policies", []):
+                _apply_managed_policy(ap.get("PolicyArn", ""))
+
+    elif node_id.startswith("iam-role:"):
+        rid = node_id[9:]
+        role = next((r for r in iam_data.get("roles", []) if r.get("RoleId") == rid), None)
+        if role:
+            for ip in role.get("inline_policies", []):
+                perms.update(_parse_policy_document(ip.get("PolicyDocument", {})))
+            for ap in role.get("attached_policies", []):
+                _apply_managed_policy(ap.get("PolicyArn", ""))
+
+    return perms
+
+
+def _evaluate_path(path, perms):
+    """
+    Evaluate a pathfinding.cloud path against a set of permissions.
+    Returns dict with matched, missing, fully_applicable.
+    """
+    required = path.get("permissions", {}).get("required", [])
+    if not required:
+        return None  # skip paths with no requirements defined
+
+    matched = []
+    missing = []
+    for req in required:
+        perm_str = req.get("permission", "")
+        perm_lower = perm_str.lower()
+        found = any(_permission_covers(p, perm_lower) for p in perms)
+        if found:
+            matched.append(perm_str)
+        else:
+            missing.append(perm_str)
+
+    if not matched:
+        return None  # no overlap at all, skip
+
+    return {
+        "id": path.get("id"),
+        "name": path.get("name"),
+        "category": path.get("category"),
+        "services": path.get("services", []),
+        "description": path.get("description", ""),
+        "exploitationSteps": path.get("exploitationSteps", ""),
+        "prerequisites": path.get("prerequisites", ""),
+        "limitations": path.get("limitations", ""),
+        "detectionTools": path.get("detectionTools", []),
+        "matched_permissions": matched,
+        "missing_permissions": missing,
+        "fully_applicable": len(missing) == 0,
+    }
+
+
+@app.route("/api/iam_principals")
+def api_iam_principals():
+    """Return all IAM user and role nodes from the current graph."""
+    principals = [
+        {"id": n["id"], "label": n.get("label", n["id"]), "type": n.get("type", ""),
+         "service": n.get("service", ""), "region": n.get("region", "")}
+        for n in GRAPH["nodes"]
+        if n.get("type") in ("iam-user", "iam-role")
+    ]
+    return jsonify(principals)
+
+
+@app.route("/api/pathfinding_paths")
+def api_pathfinding_paths():
+    """Return the full cached list from pathfinding.cloud."""
+    paths = _load_pathfinding_paths()
+    return jsonify(paths)
+
+
+@app.route("/api/iam_attack_paths")
+def api_iam_attack_paths():
+    """
+    Evaluate IAM privilege escalation paths for a given principal.
+    Query param: source=<node_id>
+    Returns applicable and partially-applicable paths.
+    """
+    source = request.args.get("source", "")
+    if not source:
+        return jsonify({"error": "source param required"}), 400
+    if not source.startswith(("iam-user:", "iam-role:")):
+        return jsonify({"error": "source must be an iam-user or iam-role node id"}), 400
+
+    paths = _load_pathfinding_paths()
+    perms = _get_principal_permissions(source)
+
+    results = []
+    for path in paths:
+        evaluated = _evaluate_path(path, perms)
+        if evaluated:
+            results.append(evaluated)
+
+    # Sort: fully applicable first, then by number of matched perms descending
+    results.sort(key=lambda r: (not r["fully_applicable"], -len(r["matched_permissions"])))
+
+    return jsonify({
+        "source": source,
+        "permissions_count": len(perms),
+        "paths": results,
+        "fully_applicable": sum(1 for r in results if r["fully_applicable"]),
+        "partially_applicable": sum(1 for r in results if not r["fully_applicable"]),
+    })
 
 
 # ── Main ──────────────────────────────────────────────────────────────────

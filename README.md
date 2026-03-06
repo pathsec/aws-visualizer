@@ -150,6 +150,47 @@ Instances in **different VPCs without peering** appear as separate graph cluster
 
 ---
 
+## IAM Attack Path Analysis
+
+The visualizer integrates with [**pathfinding.cloud**](https://pathfinding.cloud) — a catalogue of IAM privilege escalation paths originally built by [DataDog Security Research](https://github.com/DataDog/pathfinding.cloud). Full credit and thanks to the DataDog team for publishing this research.
+
+### How it works
+
+Enable the **IAM Attack Paths** toggle in the left sidebar (on by default). Type in the search box to find an IAM user or role, or simply click any IAM node in the graph to auto-select it.
+
+The analyser extracts the principal's effective permissions by reading:
+- Inline policies attached directly to the user or role
+- Customer-managed policies (with their full policy documents)
+- Well-known AWS managed policies (by ARN)
+
+It then matches those permissions against every escalation path from `pathfinding.cloud/paths.json` and displays:
+
+| Result | Meaning |
+|--------|---------|
+| **Fully applicable** | The principal holds **every** required permission for this path |
+| **Partial match** | At least one required permission is granted — shows which are missing |
+
+Click any path chip for full details: description, exploitation steps, prerequisites, limitations, and detection tools.
+
+### Path categories
+
+| Badge | Category | Description |
+|-------|----------|-------------|
+| 🔴 | `self-escalation` | Principal can escalate their own permissions |
+| 🟠 | `principal-access` | Principal can gain access to another principal |
+| 🟣 | `new-passrole` | PassRole to a newly created resource |
+| 🟣 | `existing-passrole` | PassRole to an existing resource |
+| 🩷 | `credential-access` | Credential theft without privilege escalation |
+
+### Required IAM data
+
+For accurate analysis, the ingestor (`aws_ingest.py`) collects:
+- Role attached and inline policies (`list_attached_role_policies`, `list_role_policies`, `get_role_policy`)
+- User inline policies (`list_user_policies`, `get_user_policy`)
+- Customer-managed policy documents (`get_policy_version` using `DefaultVersionId`)
+
+---
+
 ## Troubleshooting
 
 | Problem | Fix |

@@ -421,6 +421,7 @@ function buildCytoscape(data){
     var node = evt.target;
     showDetail(node.data());
     highlightNeighbors(node);
+    onIamNodeTap(node.data());
   });
   // Click background
   cy.on('tap', function(evt){
@@ -892,6 +893,284 @@ async function renderSources(){
     el.innerHTML = '<div class="source-empty">Error loading sources</div>';
   }
 }
+
+// ============ IAM ATTACK PATHS ============
+var iamAttackEnabled = true;
+var iamAttackSource = null;       // {id, label, type}
+var iamAttackPrincipals = [];     // cached list from /api/iam_principals
+var iamCurrentPaths = null;       // last /api/iam_attack_paths result
+
+var CATEGORY_COLORS = {
+  'self-escalation':   {bg:'rgba(239,68,68,0.15)',  border:'rgba(239,68,68,0.5)',  text:'#f87171'},
+  'principal-access':  {bg:'rgba(245,158,11,0.15)', border:'rgba(245,158,11,0.5)', text:'#f59e0b'},
+  'new-passrole':      {bg:'rgba(167,139,250,0.15)',border:'rgba(167,139,250,0.5)',text:'#a78bfa'},
+  'existing-passrole': {bg:'rgba(139,92,246,0.15)', border:'rgba(139,92,246,0.5)', text:'#8b5cf6'},
+  'credential-access': {bg:'rgba(244,114,182,0.15)',border:'rgba(244,114,182,0.5)',text:'#f472b6'},
+};
+
+function _catStyle(cat){
+  return CATEGORY_COLORS[cat] || {bg:'rgba(87,101,119,0.15)',border:'rgba(87,101,119,0.5)',text:'#8899ad'};
+}
+
+function toggleIamAttack(enabled){
+  iamAttackEnabled = enabled;
+  var picker = document.getElementById('iam-principal-picker');
+  var results = document.getElementById('iam-attack-results');
+  if(enabled){
+    picker.style.display = '';
+  } else {
+    picker.style.display = 'none';
+    results.innerHTML = '';
+    _updateIamBadge(null);
+  }
+}
+
+async function _ensureIamPrincipals(){
+  if(iamAttackPrincipals.length > 0) return;
+  try {
+    var resp = await fetch('/api/iam_principals');
+    iamAttackPrincipals = await resp.json();
+  } catch(e){ iamAttackPrincipals = []; }
+}
+
+async function searchIamPrincipals(query){
+  if(!iamAttackEnabled) return;
+  await _ensureIamPrincipals();
+  var resultsEl = document.getElementById('iam-search-results');
+  var q = query.trim().toLowerCase();
+  var matches = q
+    ? iamAttackPrincipals.filter(function(p){
+        return p.label.toLowerCase().indexOf(q)!==-1 || p.id.toLowerCase().indexOf(q)!==-1;
+      }).slice(0,20)
+    : iamAttackPrincipals.slice(0,20);
+
+  if(matches.length === 0){ resultsEl.style.display='none'; return; }
+
+  resultsEl.innerHTML = matches.map(function(p){
+    var tc = p.type === 'iam-user' ? '#f87171' : '#fca5a5';
+    return '<div class="iam-result-item" onclick="selectIamPrincipal(\''+escAttr(p.id)+'\',\''+escAttr(p.label)+'\',\''+escAttr(p.type)+'\')">'+
+      '<span class="iam-result-type" style="background:'+tc+'22;color:'+tc+';border:1px solid '+tc+'44;">'+escHtml(p.type)+'</span>'+
+      escHtml(p.label)+'</div>';
+  }).join('');
+  resultsEl.style.display = 'block';
+}
+
+function selectIamPrincipal(id, label, type){
+  iamAttackSource = {id:id, label:label, type:type};
+  document.getElementById('iam-principal-search').value = '';
+  document.getElementById('iam-search-results').style.display = 'none';
+  var tc = type === 'iam-user' ? '#f87171' : '#fca5a5';
+  var selEl = document.getElementById('iam-selected-principal');
+  selEl.innerHTML =
+    '<span class="iam-result-type" style="background:'+tc+'22;color:'+tc+';border:1px solid '+tc+'44;">'+escHtml(type)+'</span> '+
+    escHtml(label)+
+    '<button class="iam-selected-clear" onclick="clearIamPrincipal()" title="Clear selection">×</button>';
+  selEl.style.display = 'flex';
+
+  // Highlight the principal node on the graph
+  if(cy){
+    var node = cy.getElementById(id);
+    if(node && node.length > 0){
+      clearHighlight();
+      cy.elements().addClass('faded');
+      node.removeClass('faded').addClass('highlighted');
+    }
+  }
+  loadIamAttackPaths(id);
+}
+
+function clearIamPrincipal(){
+  iamAttackSource = null;
+  document.getElementById('iam-selected-principal').style.display = 'none';
+  document.getElementById('iam-attack-results').innerHTML = '';
+  _updateIamBadge(null);
+  clearHighlight();
+}
+
+async function loadIamAttackPaths(nodeId){
+  var resultsEl = document.getElementById('iam-attack-results');
+  resultsEl.innerHTML = '<div class="iam-status-msg">Analyzing escalation paths…</div>';
+  _updateIamBadge(null);
+  try {
+    var resp = await fetch('/api/iam_attack_paths?source=' + encodeURIComponent(nodeId));
+    if(!resp.ok){
+      var err = await resp.json();
+      resultsEl.innerHTML = '<div class="iam-status-msg">Error: '+escHtml(err.error||'unknown')+'</div>';
+      return;
+    }
+    iamCurrentPaths = await resp.json();
+    renderIamAttackResults(iamCurrentPaths);
+  } catch(e){
+    resultsEl.innerHTML = '<div class="iam-status-msg">Failed: '+escHtml(e.message)+'</div>';
+  }
+}
+
+function renderIamAttackResults(data){
+  var resultsEl = document.getElementById('iam-attack-results');
+  var paths = data.paths || [];
+  _updateIamBadge(data);
+
+  if(paths.length === 0){
+    resultsEl.innerHTML = '<div class="iam-status-msg">No matching escalation paths found.</div>';
+    return;
+  }
+
+  var fully = paths.filter(function(p){ return p.fully_applicable; });
+  var partial = paths.filter(function(p){ return !p.fully_applicable; });
+  var html = '';
+
+  if(fully.length > 0){
+    html += '<div class="iam-section-header">Fully applicable ('+fully.length+')</div>';
+    html += fully.map(function(p){ return _pathChipHtml(p, true); }).join('');
+  }
+  if(partial.length > 0){
+    html += '<div class="iam-section-header" style="margin-top:'+(fully.length?'10px':'0')+';">Partial match ('+partial.length+')</div>';
+    html += partial.slice(0,15).map(function(p){ return _pathChipHtml(p, false); }).join('');
+    if(partial.length > 15) html += '<div class="iam-status-msg">…and '+(partial.length-15)+' more partial paths</div>';
+  }
+  resultsEl.innerHTML = html;
+}
+
+function _pathChipHtml(p, fully){
+  var cs = _catStyle(p.category);
+  var total = p.matched_permissions.length + p.missing_permissions.length;
+  return '<div class="attack-path-chip '+(fully?'fully':'partial')+'" onclick="openIamDetail(\''+escAttr(p.id)+'\')" style="margin-bottom:5px;">'+
+    '<div class="attack-path-name">'+escHtml(p.name)+'</div>'+
+    '<div class="attack-path-meta">'+
+      '<span class="attack-category-badge" style="background:'+cs.bg+';color:'+cs.text+';border:1px solid '+cs.border+';">'+escHtml(p.category)+'</span>'+
+      '<span class="attack-perm-count">'+p.matched_permissions.length+'/'+total+' perms</span>'+
+    '</div>'+
+  '</div>';
+}
+
+function _updateIamBadge(data){
+  var badge = document.getElementById('iam-badge');
+  if(!data || !data.fully_applicable){ badge.style.display='none'; return; }
+  badge.textContent = data.fully_applicable + ' path'+(data.fully_applicable!==1?'s':'');
+  badge.style.display = '';
+}
+
+// Render a pathfinding.cloud field which may be a string, array, or structured object.
+function _renderIamField(val){
+  if(!val) return '';
+  if(typeof val === 'string') return '<div class="iam-detail-text">'+escHtml(val)+'</div>';
+
+  // prerequisites / limitations can be {admin:[...], nonAdmin:[...], lateral:[...]}
+  if(Array.isArray(val)){
+    return '<ul style="margin:0;padding-left:16px;">'+
+      val.map(function(s){ return '<li class="iam-detail-text" style="margin-bottom:3px;">'+escHtml(String(s))+'</li>'; }).join('')+
+    '</ul>';
+  }
+
+  // Object — render each key as a sub-section
+  var html = '';
+  Object.keys(val).forEach(function(key){
+    var v = val[key];
+    html += '<div style="margin-bottom:8px;">';
+    html += '<div style="font-size:10px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+escHtml(key)+'</div>';
+
+    if(Array.isArray(v)){
+      // exploitationSteps entries: [{step,command,description}] or plain strings
+      if(v.length > 0 && typeof v[0] === 'object' && v[0].command){
+        v.forEach(function(step){
+          html += '<div style="margin-bottom:8px;">';
+          html += '<div class="iam-detail-text" style="color:var(--text-secondary);margin-bottom:3px;">'+escHtml(step.description||'')+'</div>';
+          html += '<pre style="background:var(--bg-primary);border:1px solid var(--border);border-radius:5px;padding:8px 10px;font-size:11px;font-family:var(--font-mono);color:#a3e635;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0;">'+escHtml(step.command||'')+'</pre>';
+          html += '</div>';
+        });
+      } else {
+        html += '<ul style="margin:0;padding-left:16px;">'+
+          v.map(function(s){ return '<li class="iam-detail-text" style="margin-bottom:3px;">'+escHtml(String(s))+'</li>'; }).join('')+
+        '</ul>';
+      }
+    } else if(typeof v === 'string'){
+      // detectionTools: key=tool, value=URL
+      if(v.startsWith('http')){
+        html += '<a href="'+escHtml(v)+'" target="_blank" style="font-size:12px;color:var(--accent-cyan);font-family:var(--font-mono);word-break:break-all;">'+escHtml(key)+'</a>';
+      } else {
+        html += '<div class="iam-detail-text">'+escHtml(v)+'</div>';
+      }
+    } else {
+      html += '<div class="iam-detail-text">'+escHtml(JSON.stringify(v))+'</div>';
+    }
+    html += '</div>';
+  });
+  return html;
+}
+
+function openIamDetail(pathId){
+  if(!iamCurrentPaths) return;
+  var path = (iamCurrentPaths.paths||[]).find(function(p){ return p.id === pathId; });
+  if(!path) return;
+  var cs = _catStyle(path.category);
+
+  var matchedHtml = path.matched_permissions.map(function(p){
+    return '<span class="iam-perm-tag matched">'+escHtml(p)+'</span>';
+  }).join('');
+  var missingHtml = path.missing_permissions.map(function(p){
+    return '<span class="iam-perm-tag missing">'+escHtml(p)+'</span>';
+  }).join('');
+
+  var html =
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">'+
+      '<span class="attack-category-badge" style="background:'+cs.bg+';color:'+cs.text+';border:1px solid '+cs.border+';">'+escHtml(path.category)+'</span>'+
+      (path.fully_applicable ? '<span style="font-size:10px;color:#34d399;font-weight:700;">FULLY APPLICABLE</span>' : '')+
+    '</div>'+
+    '<div class="iam-detail-title">'+escHtml(path.name)+'</div>';
+
+  if(path.description){
+    html += '<div class="iam-detail-section"><div class="iam-detail-section-label">Description</div>'+
+      '<div class="iam-detail-text">'+escHtml(path.description)+'</div></div>';
+  }
+
+  html += '<div class="iam-detail-section"><div class="iam-detail-section-label">Permissions</div><div>';
+  if(matchedHtml) html += '<div style="margin-bottom:4px;font-size:10px;color:var(--text-muted);">Granted:</div>'+matchedHtml;
+  if(missingHtml) html += '<div style="margin-top:6px;margin-bottom:4px;font-size:10px;color:var(--text-muted);">Missing:</div>'+missingHtml;
+  html += '</div></div>';
+
+  if(path.prerequisites){
+    html += '<div class="iam-detail-section"><div class="iam-detail-section-label">Prerequisites</div>'+
+      _renderIamField(path.prerequisites)+'</div>';
+  }
+  if(path.exploitationSteps){
+    html += '<div class="iam-detail-section"><div class="iam-detail-section-label">Exploitation Steps</div>'+
+      _renderIamField(path.exploitationSteps)+'</div>';
+  }
+  if(path.limitations){
+    html += '<div class="iam-detail-section"><div class="iam-detail-section-label">Limitations</div>'+
+      _renderIamField(path.limitations)+'</div>';
+  }
+  if(path.detectionTools && Object.keys(path.detectionTools).length > 0){
+    html += '<div class="iam-detail-section"><div class="iam-detail-section-label">Detection Tools</div>'+
+      _renderIamField(path.detectionTools)+'</div>';
+  }
+
+  document.getElementById('iam-detail-content').innerHTML = html;
+  document.getElementById('iam-detail-overlay').style.display = 'flex';
+}
+
+function closeIamDetail(event){
+  if(event.target === document.getElementById('iam-detail-overlay')){
+    document.getElementById('iam-detail-overlay').style.display = 'none';
+  }
+}
+
+// Auto-select IAM principal when node clicked in graph
+function onIamNodeTap(nodeData){
+  if(!iamAttackEnabled) return;
+  if(nodeData.type !== 'iam-user' && nodeData.type !== 'iam-role') return;
+  iamAttackPrincipals = [];  // invalidate cache so fresh data is loaded
+  selectIamPrincipal(nodeData.id, nodeData.label, nodeData.type);
+}
+
+// Close search results when clicking elsewhere
+document.addEventListener('click', function(e){
+  var resultsEl = document.getElementById('iam-search-results');
+  var searchEl = document.getElementById('iam-principal-search');
+  if(resultsEl && searchEl && !searchEl.contains(e.target) && !resultsEl.contains(e.target)){
+    resultsEl.style.display = 'none';
+  }
+});
 
 // ============ GO ============
 console.log('[aws-viz] app.js loaded, calling init()...');

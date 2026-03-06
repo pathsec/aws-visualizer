@@ -117,6 +117,53 @@ def collect_iam(session, errors):
                                               errors_list=errors, service_name="iam",
                                               resource_name=f"user_policies/{uname}",
                                               UserName=uname)
+        # Inline policies for users
+        inline_names = safe_call(iam, "list_user_policies", key="PolicyNames", paginate=True,
+                                 errors_list=errors, service_name="iam",
+                                 resource_name=f"user_inline_names/{uname}", UserName=uname)
+        inline_policies = []
+        for pname in (inline_names or []):
+            doc = safe_call(iam, "get_user_policy", errors_list=errors, service_name="iam",
+                            resource_name=f"user_inline/{uname}/{pname}",
+                            UserName=uname, PolicyName=pname)
+            if isinstance(doc, dict):
+                inline_policies.append({"PolicyName": pname,
+                                        "PolicyDocument": doc.get("PolicyDocument", {})})
+        user["inline_policies"] = inline_policies
+
+    # Role attached + inline policies
+    for role in data.get("roles", []):
+        rname = role.get("RoleName", "")
+        role["attached_policies"] = safe_call(iam, "list_attached_role_policies",
+                                              key="AttachedPolicies", paginate=True,
+                                              errors_list=errors, service_name="iam",
+                                              resource_name=f"role_policies/{rname}",
+                                              RoleName=rname)
+        inline_names = safe_call(iam, "list_role_policies", key="PolicyNames", paginate=True,
+                                 errors_list=errors, service_name="iam",
+                                 resource_name=f"role_inline_names/{rname}", RoleName=rname)
+        inline_policies = []
+        for pname in (inline_names or []):
+            doc = safe_call(iam, "get_role_policy", errors_list=errors, service_name="iam",
+                            resource_name=f"role_inline/{rname}/{pname}",
+                            RoleName=rname, PolicyName=pname)
+            if isinstance(doc, dict):
+                inline_policies.append({"PolicyName": pname,
+                                        "PolicyDocument": doc.get("PolicyDocument", {})})
+        role["inline_policies"] = inline_policies
+
+    # Managed policy documents (customer-managed only, since Scope="Local" above)
+    for policy in data.get("policies", []):
+        parn = policy.get("Arn", "")
+        dvid = policy.get("DefaultVersionId")
+        if parn and dvid:
+            pv = safe_call(iam, "get_policy_version", key="PolicyVersion",
+                           errors_list=errors, service_name="iam",
+                           resource_name=f"policy_version/{parn}",
+                           PolicyArn=parn, VersionId=dvid)
+            if isinstance(pv, dict):
+                policy["document"] = pv.get("Document", {})
+
     return data
 
 
@@ -250,6 +297,25 @@ def collect_ec2(session, region, errors):
                                          service_name="ec2", resource_name="placement_groups")
     data["flow_logs"] = safe_call(ec2, "describe_flow_logs", key="FlowLogs",
                                   errors_list=errors, service_name="ec2", resource_name="flow_logs")
+    data["network_acls"] = safe_call(ec2, "describe_network_acls", key="NetworkAcls",
+                                     errors_list=errors, service_name="ec2",
+                                     resource_name="network_acls")
+    data["vpn_connections"] = safe_call(ec2, "describe_vpn_connections", key="VpnConnections",
+                                        errors_list=errors, service_name="ec2",
+                                        resource_name="vpn_connections")
+    data["vpn_gateways"] = safe_call(ec2, "describe_vpn_gateways", key="VpnGateways",
+                                     errors_list=errors, service_name="ec2",
+                                     resource_name="vpn_gateways")
+    data["customer_gateways"] = safe_call(ec2, "describe_customer_gateways",
+                                          key="CustomerGateways", errors_list=errors,
+                                          service_name="ec2", resource_name="customer_gateways")
+    data["transit_gateway_attachments"] = safe_call(
+        ec2, "describe_transit_gateway_attachments", key="TransitGatewayAttachments",
+        paginate=True, errors_list=errors, service_name="ec2",
+        resource_name="transit_gateway_attachments")
+    data["dhcp_options"] = safe_call(ec2, "describe_dhcp_options", key="DhcpOptions",
+                                     errors_list=errors, service_name="ec2",
+                                     resource_name="dhcp_options")
     return data
 
 
@@ -518,11 +584,193 @@ def collect_api_gateway(session, region, errors):
     apigw = session.client("apigateway", region_name=region)
     apis = safe_call(apigw, "get_rest_apis", key="items", paginate=True,
                      errors_list=errors, service_name="apigateway", resource_name="rest_apis")
-    # Also v2 (HTTP & WebSocket)
+    for api in apis:
+        aid = api.get("id", "")
+        api["stages"] = safe_call(apigw, "get_stages", key="item", errors_list=errors,
+                                  service_name="apigateway", resource_name=f"stages/{aid}",
+                                  restApiId=aid)
+        api["resources"] = safe_call(apigw, "get_resources", key="items", paginate=True,
+                                     errors_list=errors, service_name="apigateway",
+                                     resource_name=f"resources/{aid}", restApiId=aid)
+    # v2 (HTTP & WebSocket APIs)
     apigw2 = session.client("apigatewayv2", region_name=region)
-    v2_apis = safe_call(apigw2, "get_apis", key="Items", errors_list=errors,
-                        service_name="apigatewayv2", resource_name="apis")
+    v2_apis = safe_call(apigw2, "get_apis", key="Items", paginate=True,
+                        errors_list=errors, service_name="apigatewayv2", resource_name="apis")
+    for api in (v2_apis if isinstance(v2_apis, list) else []):
+        aid = api.get("ApiId", "")
+        api["stages"] = safe_call(apigw2, "get_stages", key="Items", errors_list=errors,
+                                  service_name="apigatewayv2", resource_name=f"stages/{aid}",
+                                  ApiId=aid)
+        api["integrations"] = safe_call(apigw2, "get_integrations", key="Items", errors_list=errors,
+                                        service_name="apigatewayv2",
+                                        resource_name=f"integrations/{aid}", ApiId=aid)
+        api["routes"] = safe_call(apigw2, "get_routes", key="Items", errors_list=errors,
+                                  service_name="apigatewayv2", resource_name=f"routes/{aid}",
+                                  ApiId=aid)
     return {"rest_apis": apis, "http_websocket_apis": v2_apis if isinstance(v2_apis, list) else []}
+
+
+def collect_cognito(session, region, errors):
+    idp = session.client("cognito-idp", region_name=region)
+    identity = session.client("cognito-identity", region_name=region)
+    data = {}
+    pools = safe_call(idp, "list_user_pools", key="UserPools", paginate=True,
+                      errors_list=errors, service_name="cognito-idp", resource_name="user_pools",
+                      MaxResults=60)
+    for p in pools:
+        pid = p["Id"]
+        p["details"] = safe_call(idp, "describe_user_pool", key="UserPool", errors_list=errors,
+                                 service_name="cognito-idp", resource_name=f"pool/{pid}",
+                                 UserPoolId=pid)
+        p["clients"] = safe_call(idp, "list_user_pool_clients", key="UserPoolClients",
+                                 paginate=True, errors_list=errors, service_name="cognito-idp",
+                                 resource_name=f"clients/{pid}", UserPoolId=pid, MaxResults=60)
+    data["user_pools"] = pools
+    data["identity_pools"] = safe_call(identity, "list_identity_pools", key="IdentityPools",
+                                       paginate=True, errors_list=errors,
+                                       service_name="cognito-identity",
+                                       resource_name="identity_pools", MaxResults=60)
+    return data
+
+
+def collect_msk(session, region, errors):
+    msk = session.client("kafka", region_name=region)
+    clusters = safe_call(msk, "list_clusters_v2", key="ClusterInfoList", paginate=True,
+                         errors_list=errors, service_name="kafka", resource_name="clusters")
+    return {"clusters": clusters}
+
+
+def collect_firehose(session, region, errors):
+    fh = session.client("firehose", region_name=region)
+    names = safe_call(fh, "list_delivery_streams", key="DeliveryStreamNames",
+                      errors_list=errors, service_name="firehose", resource_name="delivery_streams")
+    streams = []
+    for name in (names or []):
+        s = safe_call(fh, "describe_delivery_stream", key="DeliveryStreamDescription",
+                      errors_list=errors, service_name="firehose",
+                      resource_name=f"stream/{name}", DeliveryStreamName=name)
+        if s:
+            streams.append(s)
+    return {"delivery_streams": streams}
+
+
+def collect_batch(session, region, errors):
+    batch = session.client("batch", region_name=region)
+    data = {}
+    data["compute_environments"] = safe_call(batch, "describe_compute_environments",
+                                             key="computeEnvironments", paginate=True,
+                                             errors_list=errors, service_name="batch",
+                                             resource_name="compute_environments")
+    data["job_queues"] = safe_call(batch, "describe_job_queues", key="jobQueues",
+                                   paginate=True, errors_list=errors, service_name="batch",
+                                   resource_name="job_queues")
+    data["job_definitions"] = safe_call(batch, "describe_job_definitions", key="jobDefinitions",
+                                        paginate=True, errors_list=errors, service_name="batch",
+                                        resource_name="job_definitions", status="ACTIVE")
+    return data
+
+
+def collect_codecommit(session, region, errors):
+    cc = session.client("codecommit", region_name=region)
+    repos = safe_call(cc, "list_repositories", key="repositories", paginate=True,
+                      errors_list=errors, service_name="codecommit", resource_name="repositories")
+    return {"repositories": repos}
+
+
+def collect_codebuild(session, region, errors):
+    cb = session.client("codebuild", region_name=region)
+    names = safe_call(cb, "list_projects", key="projects", paginate=True,
+                      errors_list=errors, service_name="codebuild", resource_name="projects")
+    projects = []
+    if names:
+        # batch_get_projects accepts up to 100 at a time
+        for i in range(0, len(names), 100):
+            batch = safe_call(cb, "batch_get_projects", key="projects", errors_list=errors,
+                              service_name="codebuild", resource_name="batch_get_projects",
+                              names=names[i:i+100])
+            if batch:
+                projects.extend(batch)
+    return {"projects": projects}
+
+
+def collect_codepipeline(session, region, errors):
+    cp = session.client("codepipeline", region_name=region)
+    pipelines = safe_call(cp, "list_pipelines", key="pipelines", paginate=True,
+                          errors_list=errors, service_name="codepipeline",
+                          resource_name="pipelines")
+    detailed = []
+    for p in pipelines:
+        name = p.get("name", "")
+        d = safe_call(cp, "get_pipeline", key="pipeline", errors_list=errors,
+                      service_name="codepipeline", resource_name=f"pipeline/{name}", name=name)
+        if d:
+            detailed.append(d)
+    return {"pipelines": detailed}
+
+
+def collect_appsync(session, region, errors):
+    appsync = session.client("appsync", region_name=region)
+    apis = safe_call(appsync, "list_graphql_apis", key="graphqlApis", paginate=True,
+                     errors_list=errors, service_name="appsync", resource_name="graphql_apis")
+    return {"graphql_apis": apis}
+
+
+def collect_apprunner(session, region, errors):
+    ar = session.client("apprunner", region_name=region)
+    services = safe_call(ar, "list_services", key="ServiceSummaryList", paginate=True,
+                         errors_list=errors, service_name="apprunner", resource_name="services")
+    return {"services": services}
+
+
+def collect_securityhub(session, region, errors):
+    sh = session.client("securityhub", region_name=region)
+    data = {}
+    data["hub"] = safe_call(sh, "describe_hub", errors_list=errors,
+                            service_name="securityhub", resource_name="hub")
+    data["standards"] = safe_call(sh, "get_enabled_standards", key="StandardsSubscriptions",
+                                  paginate=True, errors_list=errors, service_name="securityhub",
+                                  resource_name="standards")
+    data["products"] = safe_call(sh, "list_enabled_products_for_import", key="ProductSubscriptions",
+                                 paginate=True, errors_list=errors, service_name="securityhub",
+                                 resource_name="products")
+    return data
+
+
+def collect_lightsail(session, region, errors):
+    ls = session.client("lightsail", region_name=region)
+    data = {}
+    data["instances"] = safe_call(ls, "get_instances", key="instances", paginate=True,
+                                  errors_list=errors, service_name="lightsail",
+                                  resource_name="instances")
+    data["load_balancers"] = safe_call(ls, "get_load_balancers", key="loadBalancers",
+                                       paginate=True, errors_list=errors,
+                                       service_name="lightsail", resource_name="load_balancers")
+    data["databases"] = safe_call(ls, "get_relational_databases", key="relationalDatabases",
+                                  paginate=True, errors_list=errors, service_name="lightsail",
+                                  resource_name="databases")
+    data["buckets"] = safe_call(ls, "get_buckets", key="buckets", errors_list=errors,
+                                service_name="lightsail", resource_name="buckets")
+    return data
+
+
+def collect_inspector(session, region, errors):
+    insp = session.client("inspector2", region_name=region)
+    data = {}
+    data["coverage"] = safe_call(insp, "list_coverage", key="coveredResources", paginate=True,
+                                 errors_list=errors, service_name="inspector2",
+                                 resource_name="coverage")
+    return data
+
+
+def collect_macie(session, region, errors):
+    macie = session.client("macie2", region_name=region)
+    data = {}
+    data["status"] = safe_call(macie, "get_macie_session", errors_list=errors,
+                               service_name="macie2", resource_name="session")
+    data["findings"] = safe_call(macie, "list_findings", key="findingIds", paginate=True,
+                                 errors_list=errors, service_name="macie2",
+                                 resource_name="findings")
+    return data
 
 
 def collect_redshift(session, region, errors):
@@ -704,6 +952,19 @@ REGIONAL_COLLECTORS = {
     "eventbridge": collect_eventbridge,
     "efs": collect_efs,
     "guardduty": collect_guardduty,
+    "cognito": collect_cognito,
+    "msk": collect_msk,
+    "firehose": collect_firehose,
+    "batch": collect_batch,
+    "codecommit": collect_codecommit,
+    "codebuild": collect_codebuild,
+    "codepipeline": collect_codepipeline,
+    "appsync": collect_appsync,
+    "apprunner": collect_apprunner,
+    "securityhub": collect_securityhub,
+    "lightsail": collect_lightsail,
+    "inspector": collect_inspector,
+    "macie": collect_macie,
 }
 
 

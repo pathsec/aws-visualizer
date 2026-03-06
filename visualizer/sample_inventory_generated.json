@@ -1,0 +1,5389 @@
+{
+  "metadata": {
+    "ingestion_time": "2026-03-06T02:29:19.519974Z",
+    "regions_scanned": [
+      "us-east-1",
+      "eu-west-1"
+    ],
+    "profile": "generated-sample",
+    "summary": {
+      "regions_with_resources": 2,
+      "total_regional_service_region_pairs": 66,
+      "total_errors": 0,
+      "global_services_collected": [
+        "iam",
+        "s3",
+        "route53",
+        "organizations",
+        "cloudfront"
+      ]
+    }
+  },
+  "global_services": {
+    "iam": {
+      "users": [
+        {
+          "UserName": "admin",
+          "UserId": "AIDAD6B420B9DC925C9A",
+          "Arn": "arn:aws:iam::123456789012:user/admin",
+          "mfa_devices": [
+            {
+              "SerialNumber": "arn:aws:iam::123456789012:mfa/admin"
+            }
+          ],
+          "access_keys": [
+            {
+              "AccessKeyId": "AKIA175155AFDAB503B5",
+              "Status": "Active"
+            }
+          ],
+          "attached_policies": [
+            {
+              "PolicyName": "AdministratorAccess",
+              "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+            }
+          ]
+        },
+        {
+          "UserName": "ci-deploy",
+          "UserId": "AIDACB07626E56DC9C37",
+          "Arn": "arn:aws:iam::123456789012:user/ci-deploy",
+          "mfa_devices": [],
+          "access_keys": [
+            {
+              "AccessKeyId": "AKIAC00415E21FF5FEB6",
+              "Status": "Active"
+            }
+          ],
+          "attached_policies": [
+            {
+              "PolicyName": "DeployPolicy",
+              "PolicyArn": "arn:aws:iam::123456789012:policy/DeployPolicy"
+            }
+          ]
+        },
+        {
+          "UserName": "readonly-auditor",
+          "UserId": "AIDAA9605F68E8A41687",
+          "Arn": "arn:aws:iam::123456789012:user/readonly-auditor",
+          "mfa_devices": [
+            {
+              "SerialNumber": "arn:aws:iam::123456789012:mfa/readonly-auditor"
+            }
+          ],
+          "access_keys": [],
+          "attached_policies": [
+            {
+              "PolicyName": "ReadOnlyAccess",
+              "PolicyArn": "arn:aws:iam::aws:policy/ReadOnlyAccess"
+            }
+          ]
+        },
+        {
+          "UserName": "data-analyst",
+          "UserId": "AIDA001DA713AF71C7E4",
+          "Arn": "arn:aws:iam::123456789012:user/data-analyst",
+          "mfa_devices": [
+            {
+              "SerialNumber": "arn:aws:iam::123456789012:mfa/data-analyst"
+            }
+          ],
+          "access_keys": [],
+          "attached_policies": [
+            {
+              "PolicyName": "S3DataReadPolicy",
+              "PolicyArn": "arn:aws:iam::123456789012:policy/S3DataReadPolicy"
+            }
+          ]
+        }
+      ],
+      "roles": [
+        {
+          "RoleName": "ec2-instance-role",
+          "RoleId": "AROAF0E6B7665E47299A",
+          "Arn": "arn:aws:iam::123456789012:role/ec2-instance-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        },
+        {
+          "RoleName": "lambda-exec-role",
+          "RoleId": "AROA7E7166AC3F806B7C",
+          "Arn": "arn:aws:iam::123456789012:role/lambda-exec-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        },
+        {
+          "RoleName": "ecs-task-role",
+          "RoleId": "AROA5954090C4C759323",
+          "Arn": "arn:aws:iam::123456789012:role/ecs-task-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        },
+        {
+          "RoleName": "eks-cluster-role",
+          "RoleId": "AROA38CBCF9F6EF235B5",
+          "Arn": "arn:aws:iam::123456789012:role/eks-cluster-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        },
+        {
+          "RoleName": "codepipeline-role",
+          "RoleId": "AROA9B592FDCF8200907",
+          "Arn": "arn:aws:iam::123456789012:role/codepipeline-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        },
+        {
+          "RoleName": "rds-monitoring-role",
+          "RoleId": "AROA59C52CD02B21851B",
+          "Arn": "arn:aws:iam::123456789012:role/rds-monitoring-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        },
+        {
+          "RoleName": "glue-service-role",
+          "RoleId": "AROAA955FB6A75B8E95A",
+          "Arn": "arn:aws:iam::123456789012:role/glue-service-role",
+          "AssumeRolePolicyDocument": {},
+          "Tags": [
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "GroupName": "Developers",
+          "GroupId": "AGPAA6562074D92B1AC6",
+          "Arn": "arn:aws:iam::123456789012:group/Developers"
+        },
+        {
+          "GroupName": "Ops",
+          "GroupId": "AGPAC3068FAE9346D098",
+          "Arn": "arn:aws:iam::123456789012:group/Ops"
+        },
+        {
+          "GroupName": "ReadOnly",
+          "GroupId": "AGPA9F2F7F23301A3D29",
+          "Arn": "arn:aws:iam::123456789012:group/ReadOnly"
+        },
+        {
+          "GroupName": "DataTeam",
+          "GroupId": "AGPA5BC188D8E0B9C129",
+          "Arn": "arn:aws:iam::123456789012:group/DataTeam"
+        }
+      ],
+      "policies": [
+        {
+          "PolicyName": "DeployPolicy",
+          "PolicyId": "ANPA9F11CCDEE4A97269",
+          "Arn": "arn:aws:iam::123456789012:policy/DeployPolicy",
+          "AttachmentCount": 1
+        },
+        {
+          "PolicyName": "S3DataReadPolicy",
+          "PolicyId": "ANPAA66EB07455C4DDAF",
+          "Arn": "arn:aws:iam::123456789012:policy/S3DataReadPolicy",
+          "AttachmentCount": 2
+        },
+        {
+          "PolicyName": "ECSTaskPolicy",
+          "PolicyId": "ANPA34BC5B917E67850C",
+          "Arn": "arn:aws:iam::123456789012:policy/ECSTaskPolicy",
+          "AttachmentCount": 1
+        }
+      ],
+      "instance_profiles": [
+        {
+          "InstanceProfileName": "ec2-instance-profile",
+          "InstanceProfileId": "AIPA1B6C892E30005357",
+          "Arn": "arn:aws:iam::123456789012:instance-profile/ec2-instance-profile",
+          "Roles": [
+            {
+              "RoleName": "ec2-instance-role",
+              "RoleId": "AROAF0E6B7665E47299A",
+              "Arn": "arn:aws:iam::123456789012:role/ec2-instance-role",
+              "AssumeRolePolicyDocument": {},
+              "Tags": [
+                {
+                  "Key": "ManagedBy",
+                  "Value": "terraform"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "account_summary": {
+        "Users": 4,
+        "Roles": 7,
+        "Groups": 4,
+        "Policies": 3,
+        "MFADevices": 3
+      },
+      "account_aliases": [
+        "acme-corp"
+      ]
+    },
+    "s3": {
+      "buckets": [
+        {
+          "Name": "acme-prod-assets",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {
+            "Status": "Enabled"
+          },
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {
+            "LoggingEnabled": {
+              "TargetBucket": "acme-prod-logs",
+              "TargetPrefix": "acme-prod-assets/"
+            }
+          },
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "prod"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [],
+          "acl": {}
+        },
+        {
+          "Name": "acme-prod-logs",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {
+            "Status": "Enabled"
+          },
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {},
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "prod"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [
+            {
+              "ID": "expire-old",
+              "Status": "Enabled",
+              "Expiration": {
+                "Days": 365
+              }
+            }
+          ],
+          "acl": {}
+        },
+        {
+          "Name": "acme-prod-backups",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {
+            "Status": "Enabled"
+          },
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {
+            "LoggingEnabled": {
+              "TargetBucket": "acme-prod-logs",
+              "TargetPrefix": "acme-prod-backups/"
+            }
+          },
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "prod"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [
+            {
+              "ID": "expire-old",
+              "Status": "Enabled",
+              "Expiration": {
+                "Days": 365
+              }
+            }
+          ],
+          "acl": {}
+        },
+        {
+          "Name": "acme-dev-artifacts",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {},
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {
+            "LoggingEnabled": {
+              "TargetBucket": "acme-prod-logs",
+              "TargetPrefix": "acme-dev-artifacts/"
+            }
+          },
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "dev"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [],
+          "acl": {}
+        },
+        {
+          "Name": "acme-cf-access-logs",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {
+            "Status": "Enabled"
+          },
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {
+            "LoggingEnabled": {
+              "TargetBucket": "acme-prod-logs",
+              "TargetPrefix": "acme-cf-access-logs/"
+            }
+          },
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "prod"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [
+            {
+              "ID": "expire-old",
+              "Status": "Enabled",
+              "Expiration": {
+                "Days": 365
+              }
+            }
+          ],
+          "acl": {}
+        },
+        {
+          "Name": "acme-data-lake",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {
+            "Status": "Enabled"
+          },
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {
+            "LoggingEnabled": {
+              "TargetBucket": "acme-prod-logs",
+              "TargetPrefix": "acme-data-lake/"
+            }
+          },
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "prod"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [],
+          "acl": {}
+        },
+        {
+          "Name": "acme-terraform-state",
+          "CreationDate": "2024-01-15T00:00:00Z",
+          "encryption": {
+            "ServerSideEncryptionConfiguration": {
+              "Rules": [
+                {
+                  "ApplyServerSideEncryptionByDefault": {
+                    "SSEAlgorithm": "AES256"
+                  }
+                }
+              ]
+            }
+          },
+          "versioning": {
+            "Status": "Enabled"
+          },
+          "public_access_block": {
+            "PublicAccessBlockConfiguration": {
+              "BlockPublicAcls": true,
+              "IgnorePublicAcls": true,
+              "BlockPublicPolicy": true,
+              "RestrictPublicBuckets": true
+            }
+          },
+          "logging": {
+            "LoggingEnabled": {
+              "TargetBucket": "acme-prod-logs",
+              "TargetPrefix": "acme-terraform-state/"
+            }
+          },
+          "tagging": [
+            {
+              "Key": "Environment",
+              "Value": "prod"
+            },
+            {
+              "Key": "Project",
+              "Value": "acme"
+            },
+            {
+              "Key": "ManagedBy",
+              "Value": "terraform"
+            }
+          ],
+          "policy": {},
+          "lifecycle": [],
+          "acl": {}
+        }
+      ]
+    },
+    "route53": {
+      "hosted_zones": [
+        {
+          "Id": "/hostedzone/Z6EA377F785",
+          "Name": "acme-corp.com.",
+          "Config": {
+            "PrivateZone": false
+          },
+          "ResourceRecordSetCount": 8,
+          "record_sets": [
+            {
+              "Name": "acme-corp.com.",
+              "Type": "A",
+              "AliasTarget": {
+                "DNSName": "d33a8dfa722c3.cloudfront.net",
+                "EvaluateTargetHealth": false
+              }
+            },
+            {
+              "Name": "www.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 300,
+              "ResourceRecords": [
+                {
+                  "Value": "acme-corp.com"
+                }
+              ]
+            },
+            {
+              "Name": "api.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 300,
+              "ResourceRecords": [
+                {
+                  "Value": "prod-alb-9fbb4ed7.us-east-1.elb.amazonaws.com"
+                }
+              ]
+            },
+            {
+              "Name": "mail.acme-corp.com.",
+              "Type": "MX",
+              "TTL": 3600,
+              "ResourceRecords": [
+                {
+                  "Value": "10 aspmx.l.google.com"
+                }
+              ]
+            },
+            {
+              "Name": "acme-corp.com.",
+              "Type": "TXT",
+              "TTL": 300,
+              "ResourceRecords": [
+                {
+                  "Value": "\"v=spf1 include:_spf.google.com ~all\""
+                }
+              ]
+            },
+            {
+              "Name": "_dmarc.acme-corp.com.",
+              "Type": "TXT",
+              "TTL": 300,
+              "ResourceRecords": [
+                {
+                  "Value": "\"v=DMARC1; p=quarantine; rua=mailto:dmarc@acme-corp.com\""
+                }
+              ]
+            },
+            {
+              "Name": "status.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 300,
+              "ResourceRecords": [
+                {
+                  "Value": "acme-corp.statuspage.io"
+                }
+              ]
+            },
+            {
+              "Name": "docs.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 300,
+              "ResourceRecords": [
+                {
+                  "Value": "acme-corp.gitbook.io"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "/hostedzone/ZD4D100DC33",
+          "Name": "internal.acme-corp.com.",
+          "Config": {
+            "PrivateZone": true
+          },
+          "ResourceRecordSetCount": 3,
+          "record_sets": [
+            {
+              "Name": "db.internal.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 60,
+              "ResourceRecords": [
+                {
+                  "Value": "prod-postgres-01.348990ff.us-east-1.rds.amazonaws.com"
+                }
+              ]
+            },
+            {
+              "Name": "redis.internal.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 60,
+              "ResourceRecords": [
+                {
+                  "Value": "prod-redis-rg.abc123.ng.0001.use1.cache.amazonaws.com"
+                }
+              ]
+            },
+            {
+              "Name": "kafka.internal.acme-corp.com.",
+              "Type": "CNAME",
+              "TTL": 60,
+              "ResourceRecords": [
+                {
+                  "Value": "b-1.prod-kafka.d894a754.c1.kafka.us-east-1.amazonaws.com"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "organizations": {
+      "organization": {
+        "Id": "o-54afa3830d",
+        "MasterAccountId": "123456789012",
+        "FeatureSet": "ALL",
+        "MasterAccountEmail": "aws-root@acme-corp.com"
+      },
+      "accounts": [
+        {
+          "Id": "123456789012",
+          "Name": "acme-prod",
+          "Status": "ACTIVE",
+          "Email": "aws-prod@acme-corp.com"
+        },
+        {
+          "Id": "234567890123",
+          "Name": "acme-dev",
+          "Status": "ACTIVE",
+          "Email": "aws-dev@acme-corp.com"
+        },
+        {
+          "Id": "345678901234",
+          "Name": "acme-staging",
+          "Status": "ACTIVE",
+          "Email": "aws-staging@acme-corp.com"
+        }
+      ]
+    },
+    "cloudfront": {
+      "distributions": [
+        {
+          "Id": "EC652074E6B",
+          "DomainName": "d42a847bb8efe.cloudfront.net",
+          "Status": "Deployed",
+          "Origins": {
+            "Items": [
+              {
+                "Id": "S3-acme-prod-assets",
+                "DomainName": "acme-prod-assets.s3.amazonaws.com"
+              }
+            ]
+          },
+          "DefaultCacheBehavior": {
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "CachePolicyId": "a33d6e59710a99731a86d2f5fef2d215f507"
+          },
+          "HttpVersion": "http2",
+          "PriceClass": "PriceClass_100",
+          "Tags": {
+            "Items": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        },
+        {
+          "Id": "E9FD5BAA7F5",
+          "DomainName": "d3c92cc266670.cloudfront.net",
+          "Status": "Deployed",
+          "Origins": {
+            "Items": [
+              {
+                "Id": "ALB-api",
+                "DomainName": "prod-alb-8bfec800.us-east-1.elb.amazonaws.com"
+              }
+            ]
+          },
+          "DefaultCacheBehavior": {
+            "ViewerProtocolPolicy": "https-only"
+          },
+          "HttpVersion": "http2and3",
+          "PriceClass": "PriceClass_All",
+          "Tags": {
+            "Items": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "Purpose",
+                "Value": "api"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "regional_services": {
+    "us-east-1": {
+      "ec2": {
+        "instances": [
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-32e97cc3",
+                "InstanceType": "t3.nano",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "bastion-prod"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "bastion"
+                  }
+                ],
+                "VpcId": "vpc-a043bae1",
+                "SubnetId": "subnet-39c0cb52",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-4a167fe4",
+                    "GroupName": "bastion-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.0.1.5",
+                "PublicIpAddress": "54.25.169.111",
+                "KeyName": "prod-keypair"
+              }
+            ]
+          },
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-56d0aa0b",
+                "InstanceType": "t3.medium",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "app-server-1"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "app"
+                  }
+                ],
+                "VpcId": "vpc-a043bae1",
+                "SubnetId": "subnet-8f68d9d9",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "GroupName": "app-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.0.3.11",
+                "IamInstanceProfile": {
+                  "Arn": "arn:aws:iam::123456789012:instance-profile/ec2-instance-profile"
+                },
+                "KeyName": "prod-keypair"
+              }
+            ]
+          },
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-c138227d",
+                "InstanceType": "t3.medium",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "app-server-2"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "app"
+                  }
+                ],
+                "VpcId": "vpc-a043bae1",
+                "SubnetId": "subnet-b0341314",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "GroupName": "app-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.0.3.12",
+                "IamInstanceProfile": {
+                  "Arn": "arn:aws:iam::123456789012:instance-profile/ec2-instance-profile"
+                },
+                "KeyName": "prod-keypair"
+              }
+            ]
+          },
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-1cd1a801",
+                "InstanceType": "t3.medium",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "app-server-3"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "app"
+                  }
+                ],
+                "VpcId": "vpc-a043bae1",
+                "SubnetId": "subnet-8f68d9d9",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "GroupName": "app-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.0.3.13",
+                "IamInstanceProfile": {
+                  "Arn": "arn:aws:iam::123456789012:instance-profile/ec2-instance-profile"
+                },
+                "KeyName": "prod-keypair"
+              }
+            ]
+          },
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-c367de20",
+                "InstanceType": "c5.2xlarge",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "data-processor-1"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "processing"
+                  }
+                ],
+                "VpcId": "vpc-603803a8",
+                "SubnetId": "subnet-a5534ea9",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-849e63f8",
+                    "GroupName": "data-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.0.10.20",
+                "KeyName": "prod-keypair"
+              }
+            ]
+          },
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-6ec4bbca",
+                "InstanceType": "t3.small",
+                "State": {
+                  "Name": "stopped"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "old-worker"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  }
+                ],
+                "VpcId": "vpc-a043bae1",
+                "SubnetId": "subnet-8f68d9d9",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "GroupName": "app-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.0.3.50"
+              }
+            ]
+          }
+        ],
+        "vpcs": [
+          {
+            "VpcId": "vpc-a043bae1",
+            "CidrBlock": "10.0.0.0/16",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-main-vpc"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "State": "available",
+            "IsDefault": false
+          },
+          {
+            "VpcId": "vpc-603803a8",
+            "CidrBlock": "10.0.10.0/20",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-data-vpc"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "State": "available",
+            "IsDefault": false
+          }
+        ],
+        "subnets": [
+          {
+            "SubnetId": "subnet-39c0cb52",
+            "VpcId": "vpc-a043bae1",
+            "CidrBlock": "10.0.1.0/24",
+            "AvailabilityZone": "us-east-1a",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "public-a"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": true
+          },
+          {
+            "SubnetId": "subnet-f511d9cb",
+            "VpcId": "vpc-a043bae1",
+            "CidrBlock": "10.0.2.0/24",
+            "AvailabilityZone": "us-east-1b",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "public-b"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": true
+          },
+          {
+            "SubnetId": "subnet-8f68d9d9",
+            "VpcId": "vpc-a043bae1",
+            "CidrBlock": "10.0.3.0/24",
+            "AvailabilityZone": "us-east-1a",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "private-a"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          },
+          {
+            "SubnetId": "subnet-b0341314",
+            "VpcId": "vpc-a043bae1",
+            "CidrBlock": "10.0.4.0/24",
+            "AvailabilityZone": "us-east-1b",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "private-b"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          },
+          {
+            "SubnetId": "subnet-a5534ea9",
+            "VpcId": "vpc-603803a8",
+            "CidrBlock": "10.0.10.0/25",
+            "AvailabilityZone": "us-east-1a",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-a"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          },
+          {
+            "SubnetId": "subnet-2b26fa8a",
+            "VpcId": "vpc-603803a8",
+            "CidrBlock": "10.0.10.128/25",
+            "AvailabilityZone": "us-east-1b",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-b"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          }
+        ],
+        "security_groups": [
+          {
+            "GroupId": "sg-dc30543f",
+            "GroupName": "alb-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "ALB security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "alb-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 80,
+                "ToPort": 80,
+                "IpProtocol": "tcp",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              },
+              {
+                "FromPort": 443,
+                "ToPort": 443,
+                "IpProtocol": "tcp",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-e5a6e743",
+            "GroupName": "app-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "App server security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 8080,
+                "ToPort": 8080,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-dc30543f",
+                    "UserId": "123456789012"
+                  }
+                ]
+              },
+              {
+                "FromPort": 22,
+                "ToPort": 22,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-4a167fe4",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-849e63f8",
+            "GroupName": "db-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "Database security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "db-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 5432,
+                "ToPort": 5432,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "UserId": "123456789012"
+                  }
+                ]
+              },
+              {
+                "FromPort": 3306,
+                "ToPort": 3306,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": []
+          },
+          {
+            "GroupId": "sg-101ac616",
+            "GroupName": "cache-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "ElastiCache security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "cache-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 6379,
+                "ToPort": 6379,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "UserId": "123456789012"
+                  }
+                ]
+              },
+              {
+                "FromPort": 6379,
+                "ToPort": 6379,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-f8fd0ba8",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": []
+          },
+          {
+            "GroupId": "sg-f8fd0ba8",
+            "GroupName": "lambda-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "Lambda VPC security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "lambda-sg"
+              }
+            ],
+            "IpPermissions": [],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-4a167fe4",
+            "GroupName": "bastion-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "Bastion SSH access",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "bastion-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 22,
+                "ToPort": 22,
+                "IpProtocol": "tcp",
+                "IpRanges": [
+                  {
+                    "CidrIp": "203.0.113.0/24",
+                    "Description": "Corporate VPN"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-82ed4a92",
+            "GroupName": "eks-cluster-sg",
+            "VpcId": "vpc-a043bae1",
+            "Description": "EKS cluster security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "eks-cluster-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 443,
+                "ToPort": 443,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-e5a6e743",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "internet_gateways": [
+          {
+            "InternetGatewayId": "igw-c8c8050e",
+            "Attachments": [
+              {
+                "VpcId": "vpc-a043bae1",
+                "State": "attached"
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-igw"
+              }
+            ]
+          }
+        ],
+        "nat_gateways": [
+          {
+            "NatGatewayId": "nat-ed40ef17",
+            "VpcId": "vpc-a043bae1",
+            "SubnetId": "subnet-39c0cb52",
+            "State": "available",
+            "ConnectivityType": "public",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-nat"
+              }
+            ]
+          }
+        ],
+        "elastic_ips": [
+          {
+            "PublicIp": "52.125.40.49",
+            "AllocationId": "eipalloc-4f98b098",
+            "Domain": "vpc",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "nat-eip"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "VolumeId": "vol-d2f129a3",
+            "Size": 20,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "AvailabilityZone": "us-east-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "bastion-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "Attachments": [
+              {
+                "InstanceId": "i-32e97cc3",
+                "Device": "/dev/xvda",
+                "State": "attached"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-1e399698",
+            "Size": 100,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "AvailabilityZone": "us-east-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-1-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-e3b36a45",
+            "Size": 100,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "AvailabilityZone": "us-east-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-2-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-c17ff134",
+            "Size": 100,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "AvailabilityZone": "us-east-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-3-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-eee52db9",
+            "Size": 50,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "AvailabilityZone": "us-east-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-proc-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-fa0d4af2",
+            "Size": 1000,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "AvailabilityZone": "us-east-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-proc-data"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "key_pairs": [
+          {
+            "KeyName": "prod-keypair",
+            "KeyPairId": "key-pair-11849b3a",
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "snapshots": [],
+        "amis": [],
+        "network_interfaces": [],
+        "route_tables": [
+          {
+            "RouteTableId": "rtb-47ed1640",
+            "VpcId": "vpc-a043bae1",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "public-rt"
+              }
+            ],
+            "Routes": [
+              {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": "igw-c8c8050e",
+                "State": "active"
+              }
+            ]
+          },
+          {
+            "RouteTableId": "rtb-ca4b8601",
+            "VpcId": "vpc-a043bae1",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "private-rt"
+              }
+            ],
+            "Routes": [
+              {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "NatGatewayId": "nat-ed40ef17",
+                "State": "active"
+              }
+            ]
+          }
+        ],
+        "vpc_endpoints": [
+          {
+            "VpcEndpointId": "vpce-ee8d9224",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-a043bae1",
+            "ServiceName": "com.amazonaws.us-east-1.s3",
+            "State": "available"
+          },
+          {
+            "VpcEndpointId": "vpce-ecde331c",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-a043bae1",
+            "ServiceName": "com.amazonaws.us-east-1.secretsmanager",
+            "State": "available"
+          }
+        ],
+        "vpc_peering_connections": [],
+        "transit_gateways": [],
+        "launch_templates": [
+          {
+            "LaunchTemplateId": "lt-e692edfc",
+            "LaunchTemplateName": "prod-app-lt",
+            "DefaultVersionNumber": 3,
+            "LatestVersionNumber": 3,
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "placement_groups": [],
+        "flow_logs": [
+          {
+            "FlowLogId": "fl-e0b5ecdc",
+            "ResourceId": "vpc-a043bae1",
+            "TrafficType": "ALL",
+            "LogDestinationType": "cloud-watch-logs",
+            "LogGroupName": "/aws/vpc/flowlogs/prod",
+            "DeliverLogsStatus": "SUCCESS"
+          }
+        ],
+        "network_acls": [
+          {
+            "NetworkAclId": "acl-4c1dd3d7",
+            "VpcId": "vpc-a043bae1",
+            "IsDefault": true,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-default-acl"
+              }
+            ]
+          },
+          {
+            "NetworkAclId": "acl-4c3035df",
+            "VpcId": "vpc-a043bae1",
+            "IsDefault": false,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-db-acl"
+              }
+            ]
+          }
+        ],
+        "vpn_connections": [],
+        "vpn_gateways": [],
+        "customer_gateways": [],
+        "transit_gateway_attachments": [],
+        "dhcp_options": [
+          {
+            "DhcpOptionsId": "dopt-4a6f8f1f",
+            "DhcpConfigurations": [
+              {
+                "Key": "domain-name-servers",
+                "Values": [
+                  {
+                    "Value": "AmazonProvidedDNS"
+                  }
+                ]
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-dhcp"
+              }
+            ]
+          }
+        ]
+      },
+      "rds": {
+        "db_instances": [
+          {
+            "DBInstanceIdentifier": "prod-postgres-01",
+            "DBInstanceClass": "db.r6g.large",
+            "Engine": "postgres",
+            "EngineVersion": "15.4",
+            "DBInstanceStatus": "available",
+            "Endpoint": {
+              "Address": "prod-postgres-01.2f416b59.us-east-1.rds.amazonaws.com",
+              "Port": 5432
+            },
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-849e63f8",
+                "Status": "active"
+              }
+            ],
+            "DBSubnetGroup": {
+              "DBSubnetGroupName": "prod-db-subnet-group",
+              "VpcId": "vpc-a043bae1"
+            },
+            "MultiAZ": true,
+            "StorageEncrypted": true,
+            "AllocatedStorage": 200,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-postgres-01"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "DBInstanceIdentifier": "prod-mysql-01",
+            "DBInstanceClass": "db.t3.medium",
+            "Engine": "mysql",
+            "EngineVersion": "8.0.35",
+            "DBInstanceStatus": "available",
+            "Endpoint": {
+              "Address": "prod-mysql-01.8694b0e8.us-east-1.rds.amazonaws.com",
+              "Port": 3306
+            },
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-849e63f8",
+                "Status": "active"
+              }
+            ],
+            "DBSubnetGroup": {
+              "DBSubnetGroupName": "prod-db-subnet-group",
+              "VpcId": "vpc-a043bae1"
+            },
+            "MultiAZ": false,
+            "StorageEncrypted": true,
+            "AllocatedStorage": 100,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-mysql-01"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "DBInstanceIdentifier": "prod-aurora-cluster-instance-1",
+            "DBInstanceClass": "db.r6g.large",
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.4",
+            "DBInstanceStatus": "available",
+            "DBClusterIdentifier": "prod-aurora-cluster",
+            "Endpoint": {
+              "Address": "prod-aurora-cluster-instance-1.bba51a55.us-east-1.rds.amazonaws.com",
+              "Port": 5432
+            },
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-849e63f8",
+                "Status": "active"
+              }
+            ],
+            "DBSubnetGroup": {
+              "DBSubnetGroupName": "prod-db-subnet-group",
+              "VpcId": "vpc-a043bae1"
+            },
+            "MultiAZ": true,
+            "StorageEncrypted": true,
+            "AllocatedStorage": 1,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-aurora-cluster-instance-1"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "db_clusters": [
+          {
+            "DBClusterIdentifier": "prod-aurora-cluster",
+            "Engine": "aurora-postgresql",
+            "EngineVersion": "15.4",
+            "Status": "available",
+            "Endpoint": "prod-aurora-cluster.cluster-db446642.us-east-1.rds.amazonaws.com",
+            "ReaderEndpoint": "prod-aurora-cluster.cluster-ro-6fae9480.us-east-1.rds.amazonaws.com",
+            "Port": 5432,
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-849e63f8"
+              }
+            ],
+            "DBSubnetGroup": "prod-db-subnet-group",
+            "StorageEncrypted": true,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-aurora-cluster"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "db_snapshots": [
+          {
+            "DBSnapshotIdentifier": "prod-postgres-01-snap-20260101",
+            "DBInstanceIdentifier": "prod-postgres-01",
+            "SnapshotType": "automated",
+            "Status": "available",
+            "Engine": "postgres"
+          }
+        ],
+        "db_subnet_groups": [
+          {
+            "DBSubnetGroupName": "prod-db-subnet-group",
+            "VpcId": "vpc-a043bae1",
+            "Subnets": [
+              {
+                "SubnetIdentifier": "subnet-8f68d9d9",
+                "SubnetAvailabilityZone": {
+                  "Name": "us-east-1a"
+                }
+              },
+              {
+                "SubnetIdentifier": "subnet-b0341314",
+                "SubnetAvailabilityZone": {
+                  "Name": "us-east-1b"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "lambda": {
+        "functions": [
+          {
+            "FunctionName": "api-handler",
+            "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:api-handler",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 19304453,
+            "Timeout": 30,
+            "MemorySize": 1024,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {
+              "VpcId": "vpc-a043bae1",
+              "SubnetIds": [
+                "subnet-8f68d9d9",
+                "subnet-b0341314"
+              ],
+              "SecurityGroupIds": [
+                "sg-f8fd0ba8"
+              ]
+            },
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "us-east-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "api"
+            },
+            "policy": {},
+            "event_source_mappings": []
+          },
+          {
+            "FunctionName": "event-processor",
+            "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:event-processor",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 38972119,
+            "Timeout": 300,
+            "MemorySize": 512,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {
+              "VpcId": "vpc-a043bae1",
+              "SubnetIds": [
+                "subnet-8f68d9d9",
+                "subnet-b0341314"
+              ],
+              "SecurityGroupIds": [
+                "sg-f8fd0ba8"
+              ]
+            },
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "us-east-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "processing"
+            },
+            "policy": {},
+            "event_source_mappings": [
+              {
+                "EventSourceArn": "arn:aws:sqs:us-east-1:123456789012:prod-task-queue",
+                "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:event-processor",
+                "State": "Enabled",
+                "BatchSize": 10
+              }
+            ]
+          },
+          {
+            "FunctionName": "scheduled-cleanup",
+            "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:scheduled-cleanup",
+            "Runtime": "nodejs20.x",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 31254829,
+            "Timeout": 60,
+            "MemorySize": 1024,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {},
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "us-east-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "maintenance"
+            },
+            "policy": {},
+            "event_source_mappings": []
+          },
+          {
+            "FunctionName": "auth-authorizer",
+            "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:auth-authorizer",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 45390576,
+            "Timeout": 30,
+            "MemorySize": 1024,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {
+              "VpcId": "vpc-a043bae1",
+              "SubnetIds": [
+                "subnet-8f68d9d9",
+                "subnet-b0341314"
+              ],
+              "SecurityGroupIds": [
+                "sg-f8fd0ba8"
+              ]
+            },
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "us-east-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "auth"
+            },
+            "policy": {},
+            "event_source_mappings": []
+          },
+          {
+            "FunctionName": "image-resizer",
+            "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:image-resizer",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 49439536,
+            "Timeout": 30,
+            "MemorySize": 128,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {},
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "us-east-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "media"
+            },
+            "policy": {},
+            "event_source_mappings": []
+          },
+          {
+            "FunctionName": "data-transformer",
+            "FunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:data-transformer",
+            "Runtime": "java17",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 19094583,
+            "Timeout": 300,
+            "MemorySize": 512,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {},
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "us-east-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "etl"
+            },
+            "policy": {},
+            "event_source_mappings": []
+          }
+        ]
+      },
+      "ecs": {
+        "clusters": [
+          {
+            "clusterArn": "arn:aws:ecs:us-east-1:123456789012:cluster/prod-cluster",
+            "clusterName": "prod-cluster",
+            "status": "ACTIVE",
+            "registeredContainerInstancesCount": 0,
+            "runningTasksCount": 5,
+            "pendingTasksCount": 0,
+            "tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "services": [
+              {
+                "serviceName": "api-service",
+                "serviceArn": "arn:aws:ecs:us-east-1:123456789012:service/prod-cluster/api-service",
+                "clusterArn": "arn:aws:ecs:us-east-1:123456789012:cluster/prod-cluster",
+                "status": "ACTIVE",
+                "desiredCount": 3,
+                "runningCount": 3,
+                "pendingCount": 0,
+                "launchType": "FARGATE",
+                "networkConfiguration": {
+                  "awsvpcConfiguration": {
+                    "subnets": [
+                      "subnet-8f68d9d9",
+                      "subnet-b0341314"
+                    ],
+                    "securityGroups": [
+                      "sg-e5a6e743"
+                    ],
+                    "assignPublicIp": "DISABLED"
+                  }
+                },
+                "loadBalancers": [
+                  {
+                    "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/api-tg/1f34c20f9c7e9b66",
+                    "containerName": "api",
+                    "containerPort": 8080
+                  }
+                ],
+                "tags": [
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  }
+                ]
+              },
+              {
+                "serviceName": "worker-service",
+                "serviceArn": "arn:aws:ecs:us-east-1:123456789012:service/prod-cluster/worker-service",
+                "clusterArn": "arn:aws:ecs:us-east-1:123456789012:cluster/prod-cluster",
+                "status": "ACTIVE",
+                "desiredCount": 2,
+                "runningCount": 2,
+                "pendingCount": 0,
+                "launchType": "FARGATE",
+                "networkConfiguration": {
+                  "awsvpcConfiguration": {
+                    "subnets": [
+                      "subnet-8f68d9d9"
+                    ],
+                    "securityGroups": [
+                      "sg-e5a6e743"
+                    ],
+                    "assignPublicIp": "DISABLED"
+                  }
+                },
+                "tags": [
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "task_definition_arns": [
+          "arn:aws:ecs:us-east-1:123456789012:task-definition/api-task:12",
+          "arn:aws:ecs:us-east-1:123456789012:task-definition/worker-task:8"
+        ]
+      },
+      "eks": {
+        "clusters": [
+          {
+            "name": "prod-eks",
+            "arn": "arn:aws:eks:us-east-1:123456789012:cluster/prod-eks",
+            "status": "ACTIVE",
+            "version": "1.29",
+            "endpoint": "https://2bedec3cb78e127885c7de6e72d7cd4c.gr7.us-east-1.eks.amazonaws.com",
+            "roleArn": "arn:aws:iam::123456789012:role/eks-cluster-role",
+            "resourcesVpcConfig": {
+              "subnetIds": [
+                "subnet-8f68d9d9",
+                "subnet-b0341314",
+                "subnet-39c0cb52",
+                "subnet-f511d9cb"
+              ],
+              "securityGroupIds": [
+                "sg-82ed4a92"
+              ],
+              "vpcId": "vpc-a043bae1",
+              "endpointPublicAccess": false,
+              "endpointPrivateAccess": true
+            },
+            "tags": {
+              "Environment": "prod"
+            }
+          }
+        ]
+      },
+      "elb": {
+        "load_balancers_v2": [
+          {
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/prod-alb/638b34fa78135933",
+            "LoadBalancerName": "prod-alb",
+            "DNSName": "prod-alb-1a3ed13a.us-east-1.elb.amazonaws.com",
+            "Type": "application",
+            "Scheme": "internet-facing",
+            "VpcId": "vpc-a043bae1",
+            "SecurityGroups": [
+              "sg-dc30543f"
+            ],
+            "AvailabilityZones": [
+              {
+                "SubnetId": "subnet-39c0cb52",
+                "ZoneName": "us-east-1a"
+              },
+              {
+                "SubnetId": "subnet-f511d9cb",
+                "ZoneName": "us-east-1b"
+              }
+            ],
+            "State": {
+              "Code": "active"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "target_groups": [
+          {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/api-tg/737b35e126236570",
+            "TargetGroupName": "api-tg",
+            "Protocol": "HTTP",
+            "Port": 8080,
+            "VpcId": "vpc-a043bae1",
+            "TargetType": "ip",
+            "LoadBalancerArns": [
+              "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/prod-alb/638b34fa78135933"
+            ]
+          },
+          {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/web-tg/d6cf0e97f46ed8bc",
+            "TargetGroupName": "web-tg",
+            "Protocol": "HTTP",
+            "Port": 80,
+            "VpcId": "vpc-a043bae1",
+            "TargetType": "ip",
+            "LoadBalancerArns": [
+              "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/prod-alb/638b34fa78135933"
+            ]
+          }
+        ],
+        "classic_load_balancers": []
+      },
+      "autoscaling": {
+        "auto_scaling_groups": [
+          {
+            "AutoScalingGroupName": "prod-app-asg",
+            "AutoScalingGroupARN": "arn:aws:autoscaling:us-east-1:123456789012:autoScalingGroup::AutoScalingGroupName/prod-app-asg",
+            "LaunchTemplate": {
+              "LaunchTemplateName": "prod-app-lt",
+              "Version": "$Latest"
+            },
+            "MinSize": 2,
+            "MaxSize": 10,
+            "DesiredCapacity": 3,
+            "AvailabilityZones": [
+              "us-east-1a",
+              "us-east-1b"
+            ],
+            "VPCZoneIdentifier": "subnet-8f68d9d9,subnet-b0341314",
+            "HealthCheckType": "ELB",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-app-asg"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "launch_configurations": []
+      },
+      "dynamodb": {
+        "tables": [
+          {
+            "TableName": "prod-users",
+            "TableArn": "arn:aws:dynamodb:us-east-1:123456789012:table/prod-users",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 29601226,
+            "ItemCount": 512045,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "TableName": "prod-sessions",
+            "TableArn": "arn:aws:dynamodb:us-east-1:123456789012:table/prod-sessions",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 29451297,
+            "ItemCount": 286293,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "TableName": "prod-events",
+            "TableArn": "arn:aws:dynamodb:us-east-1:123456789012:table/prod-events",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 58497938,
+            "ItemCount": 509332,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "TableName": "prod-feature-flags",
+            "TableArn": "arn:aws:dynamodb:us-east-1:123456789012:table/prod-feature-flags",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 3896669,
+            "ItemCount": 407846,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "TableName": "prod-audit-log",
+            "TableArn": "arn:aws:dynamodb:us-east-1:123456789012:table/prod-audit-log",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 45115567,
+            "ItemCount": 701464,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ]
+      },
+      "sqs": {
+        "queues": [
+          {
+            "url": "https://sqs.us-east-1.amazonaws.com/123456789012/prod-task-queue",
+            "attributes": {
+              "QueueArn": "arn:aws:sqs:us-east-1:123456789012:prod-task-queue",
+              "ApproximateNumberOfMessages": "347",
+              "VisibilityTimeout": "30",
+              "MessageRetentionPeriod": "1209600",
+              "ReceiveMessageWaitTimeSeconds": "20",
+              "KmsMasterKeyId": "1cc2784d"
+            }
+          },
+          {
+            "url": "https://sqs.us-east-1.amazonaws.com/123456789012/prod-task-queue-dlq",
+            "attributes": {
+              "QueueArn": "arn:aws:sqs:us-east-1:123456789012:prod-task-queue-dlq",
+              "ApproximateNumberOfMessages": "408",
+              "VisibilityTimeout": "30",
+              "MessageRetentionPeriod": "1209600",
+              "ReceiveMessageWaitTimeSeconds": "20",
+              "KmsMasterKeyId": "1cc2784d"
+            }
+          },
+          {
+            "url": "https://sqs.us-east-1.amazonaws.com/123456789012/prod-notification-queue",
+            "attributes": {
+              "QueueArn": "arn:aws:sqs:us-east-1:123456789012:prod-notification-queue",
+              "ApproximateNumberOfMessages": "207",
+              "VisibilityTimeout": "30",
+              "MessageRetentionPeriod": "1209600",
+              "ReceiveMessageWaitTimeSeconds": "20",
+              "KmsMasterKeyId": "1cc2784d"
+            }
+          }
+        ]
+      },
+      "sns": {
+        "topics": [
+          {
+            "TopicArn": "arn:aws:sns:us-east-1:123456789012:prod-alerts",
+            "attributes": {
+              "TopicArn": "arn:aws:sns:us-east-1:123456789012:prod-alerts",
+              "DisplayName": "prod Alerts",
+              "KmsMasterKeyId": "1cc2784d"
+            },
+            "subscriptions": [
+              {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:123456789012:prod-alerts:bdef8e9a",
+                "Protocol": "email",
+                "Endpoint": "ops@acme-corp.com"
+              },
+              {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:123456789012:prod-alerts:16d24575",
+                "Protocol": "sqs",
+                "Endpoint": "arn:aws:sqs:us-east-1:123456789012:prod-task-queue"
+              }
+            ]
+          },
+          {
+            "TopicArn": "arn:aws:sns:us-east-1:123456789012:prod-deployments",
+            "attributes": {
+              "TopicArn": "arn:aws:sns:us-east-1:123456789012:prod-deployments",
+              "DisplayName": "prod Deployments",
+              "KmsMasterKeyId": "1cc2784d"
+            },
+            "subscriptions": [
+              {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:123456789012:prod-deployments:e4f6d7b0",
+                "Protocol": "email",
+                "Endpoint": "ops@acme-corp.com"
+              },
+              {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:123456789012:prod-deployments:f31f003d",
+                "Protocol": "sqs",
+                "Endpoint": "arn:aws:sqs:us-east-1:123456789012:prod-task-queue"
+              }
+            ]
+          },
+          {
+            "TopicArn": "arn:aws:sns:us-east-1:123456789012:prod-user-notifications",
+            "attributes": {
+              "TopicArn": "arn:aws:sns:us-east-1:123456789012:prod-user-notifications",
+              "DisplayName": "prod User Notifications",
+              "KmsMasterKeyId": "1cc2784d"
+            },
+            "subscriptions": [
+              {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:123456789012:prod-user-notifications:9371f745",
+                "Protocol": "email",
+                "Endpoint": "ops@acme-corp.com"
+              },
+              {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:123456789012:prod-user-notifications:9fbc249e",
+                "Protocol": "sqs",
+                "Endpoint": "arn:aws:sqs:us-east-1:123456789012:prod-task-queue"
+              }
+            ]
+          }
+        ]
+      },
+      "cloudwatch": {
+        "alarms": [
+          {
+            "AlarmName": "HighCPU-app",
+            "MetricName": "CPUUtilization",
+            "Namespace": "AWS/EC2",
+            "Threshold": 80,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          },
+          {
+            "AlarmName": "RDS-connections",
+            "MetricName": "DatabaseConnections",
+            "Namespace": "AWS/RDS",
+            "Threshold": 100,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          },
+          {
+            "AlarmName": "Lambda-errors",
+            "MetricName": "Errors",
+            "Namespace": "AWS/Lambda",
+            "Threshold": 10,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          },
+          {
+            "AlarmName": "ALB-5xx-rate",
+            "MetricName": "HTTPCode_ELB_5XX_Count",
+            "Namespace": "AWS/ApplicationELB",
+            "Threshold": 20,
+            "StateValue": "ALARM",
+            "ComparisonOperator": "GreaterThanThreshold"
+          },
+          {
+            "AlarmName": "SQS-queue-depth",
+            "MetricName": "ApproximateNumberOfMessagesVisible",
+            "Namespace": "AWS/SQS",
+            "Threshold": 1000,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          },
+          {
+            "AlarmName": "Redis-memory",
+            "MetricName": "DatabaseMemoryUsagePercentage",
+            "Namespace": "AWS/ElastiCache",
+            "Threshold": 80,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          }
+        ],
+        "dashboards": [
+          {
+            "DashboardName": "prod-overview"
+          },
+          {
+            "DashboardName": "prod-data-pipeline"
+          }
+        ]
+      },
+      "cloudwatch_logs": {
+        "log_groups": [
+          {
+            "logGroupName": "/aws/lambda/api-handler",
+            "retentionInDays": 30
+          },
+          {
+            "logGroupName": "/aws/lambda/event-processor",
+            "retentionInDays": 30
+          },
+          {
+            "logGroupName": "/aws/lambda/auth-authorizer",
+            "retentionInDays": 30
+          },
+          {
+            "logGroupName": "/ecs/prod-cluster",
+            "retentionInDays": 90
+          },
+          {
+            "logGroupName": "/aws/eks/prod-eks/cluster",
+            "retentionInDays": 90
+          },
+          {
+            "logGroupName": "/aws/rds/instance/prod-postgres-01/postgresql",
+            "retentionInDays": 30
+          },
+          {
+            "logGroupName": "/aws/vpc/flowlogs/prod",
+            "retentionInDays": 90
+          },
+          {
+            "logGroupName": "/aws/codebuild/api-build",
+            "retentionInDays": 14
+          }
+        ]
+      },
+      "cloudformation": {
+        "stacks": [
+          {
+            "StackName": "acme-network",
+            "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/acme-network/9e6f39d3b4acc908a1a06765e7228a9ec7d9",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-app",
+            "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/acme-app/53e47c9a57575449e88336837b70463a585f",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-data",
+            "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/acme-data/85743b5bfb3b49c9fd454b2004fac10475f4",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-monitoring",
+            "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/acme-monitoring/d1179a2cf138699c6e49690f1ca413826b70",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-iam",
+            "StackId": "arn:aws:cloudformation:us-east-1:123456789012:stack/acme-iam/44d134c9c3132420c9de77464879eb903ad9",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          }
+        ]
+      },
+      "secrets_manager": {
+        "secrets": [
+          {
+            "Name": "prod/db/postgres-password",
+            "ARN": "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/db/postgres-password-0cd9c2"
+          },
+          {
+            "Name": "prod/db/mysql-password",
+            "ARN": "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/db/mysql-password-874f6d"
+          },
+          {
+            "Name": "prod/api/stripe-key",
+            "ARN": "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/api/stripe-key-f76512"
+          },
+          {
+            "Name": "prod/api/jwt-secret",
+            "ARN": "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/api/jwt-secret-67a6c0"
+          },
+          {
+            "Name": "prod/kafka/sasl-password",
+            "ARN": "arn:aws:secretsmanager:us-east-1:123456789012:secret:prod/kafka/sasl-password-141cdd"
+          }
+        ]
+      },
+      "ssm": {
+        "parameters": [
+          {
+            "Name": "/prod/app/db-host",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/app/db-name",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/app/redis-host",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/app/feature-flags",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-15T00:00:00Z"
+          },
+          {
+            "Name": "/prod/keys/internal-api",
+            "Type": "SecureString",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/kafka/broker-list",
+            "Type": "String",
+            "LastModifiedDate": "2025-12-01T00:00:00Z"
+          }
+        ]
+      },
+      "kms": {
+        "keys": [
+          {
+            "KeyId": "1cc2784d",
+            "Arn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "Description": "prod master encryption key",
+            "KeyState": "Enabled",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeySpec": "SYMMETRIC_DEFAULT",
+            "Origin": "AWS_KMS",
+            "MultiRegion": false
+          },
+          {
+            "KeyId": "0d708977",
+            "Arn": "arn:aws:kms:us-east-1:123456789012:key/0424e70a",
+            "Description": "RDS encryption key",
+            "KeyState": "Enabled",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeySpec": "SYMMETRIC_DEFAULT"
+          },
+          {
+            "KeyId": "cb4063d1",
+            "Arn": "arn:aws:kms:us-east-1:123456789012:key/fa2e4b67",
+            "Description": "S3 data lake encryption key",
+            "KeyState": "Enabled",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeySpec": "SYMMETRIC_DEFAULT"
+          }
+        ]
+      },
+      "ecr": {
+        "repositories": [
+          {
+            "repositoryName": "prod/api-service",
+            "repositoryArn": "arn:aws:ecr:us-east-1:123456789012:repository/prod/api-service",
+            "repositoryUri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/prod/api-service",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/worker",
+            "repositoryArn": "arn:aws:ecr:us-east-1:123456789012:repository/prod/worker",
+            "repositoryUri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/prod/worker",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/frontend",
+            "repositoryArn": "arn:aws:ecr:us-east-1:123456789012:repository/prod/frontend",
+            "repositoryUri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/prod/frontend",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/data-processor",
+            "repositoryArn": "arn:aws:ecr:us-east-1:123456789012:repository/prod/data-processor",
+            "repositoryUri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/prod/data-processor",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/auth-service",
+            "repositoryArn": "arn:aws:ecr:us-east-1:123456789012:repository/prod/auth-service",
+            "repositoryUri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/prod/auth-service",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          }
+        ]
+      },
+      "elasticache": {
+        "clusters": [
+          {
+            "CacheClusterId": "prod-redis",
+            "CacheClusterStatus": "available",
+            "CacheNodeType": "cache.r6g.large",
+            "Engine": "redis",
+            "EngineVersion": "7.0.7",
+            "NumCacheNodes": 1,
+            "PreferredAvailabilityZone": "us-east-1a",
+            "ReplicationGroupId": "prod-redis-rg",
+            "SecurityGroups": [
+              {
+                "SecurityGroupId": "sg-101ac616",
+                "Status": "active"
+              }
+            ]
+          }
+        ],
+        "replication_groups": [
+          {
+            "ReplicationGroupId": "prod-redis-rg",
+            "Description": "prod Redis replication group",
+            "Status": "available",
+            "AutomaticFailover": "enabled",
+            "MultiAZ": "enabled",
+            "NodeGroups": [
+              {
+                "NodeGroupId": "0001",
+                "Status": "available",
+                "PrimaryEndpoint": {
+                  "Address": "prod-redis-rg.abc123.ng.0001.us-east-1.cache.amazonaws.com",
+                  "Port": 6379
+                }
+              }
+            ],
+            "AtRestEncryptionEnabled": true,
+            "TransitEncryptionEnabled": true
+          }
+        ]
+      },
+      "kinesis": {
+        "streams": [
+          {
+            "StreamName": "prod-events",
+            "StreamARN": "arn:aws:kinesis:us-east-1:123456789012:stream/prod-events",
+            "StreamStatus": "ACTIVE",
+            "Shards": [
+              {
+                "ShardId": "shardId-000000000000"
+              },
+              {
+                "ShardId": "shardId-000000000001"
+              },
+              {
+                "ShardId": "shardId-000000000002"
+              },
+              {
+                "ShardId": "shardId-000000000003"
+              }
+            ],
+            "RetentionPeriodHours": 24,
+            "EncryptionType": "KMS",
+            "KeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+          }
+        ]
+      },
+      "step_functions": {
+        "state_machines": [
+          {
+            "stateMachineArn": "arn:aws:states:us-east-1:123456789012:stateMachine:prod-order-workflow",
+            "name": "prod-order-workflow",
+            "type": "EXPRESS",
+            "creationDate": "2025-03-01T00:00:00Z",
+            "roleArn": "arn:aws:iam::123456789012:role/lambda-exec-role"
+          }
+        ]
+      },
+      "api_gateway": {
+        "rest_apis": [
+          {
+            "id": "77239b21cd",
+            "name": "prod-rest-api",
+            "description": "prod REST API",
+            "createdDate": "2025-01-01T00:00:00Z",
+            "stages": [
+              {
+                "stageName": "v1",
+                "deploymentId": "75c6edf3",
+                "description": "Version 1"
+              }
+            ],
+            "resources": [
+              {
+                "id": "6d657e6fca",
+                "path": "/"
+              },
+              {
+                "id": "2f2f51d1e0",
+                "path": "/users",
+                "resourceMethods": {
+                  "GET": {},
+                  "POST": {}
+                }
+              },
+              {
+                "id": "2df1c49615",
+                "path": "/users/{id}",
+                "resourceMethods": {
+                  "GET": {},
+                  "PUT": {},
+                  "DELETE": {}
+                }
+              },
+              {
+                "id": "a8fae7893a",
+                "path": "/orders",
+                "resourceMethods": {
+                  "GET": {},
+                  "POST": {}
+                }
+              },
+              {
+                "id": "431fcb1240",
+                "path": "/health",
+                "resourceMethods": {
+                  "GET": {}
+                }
+              }
+            ]
+          }
+        ],
+        "http_websocket_apis": [
+          {
+            "ApiId": "5c40bd9ad7",
+            "Name": "prod-http-api",
+            "ProtocolType": "HTTP",
+            "ApiEndpoint": "https://5c40bd9ad7.execute-api.us-east-1.amazonaws.com",
+            "CreatedDate": "2025-06-01T00:00:00Z",
+            "Tags": {
+              "Environment": "prod"
+            },
+            "stages": [
+              {
+                "StageName": "$default",
+                "AutoDeploy": true
+              }
+            ],
+            "integrations": [
+              {
+                "IntegrationId": "505636a2",
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": "arn:aws:lambda:us-east-1:123456789012:function:api-handler"
+              },
+              {
+                "IntegrationId": "296a793a",
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": "arn:aws:lambda:us-east-1:123456789012:function:auth-authorizer"
+              }
+            ],
+            "routes": [
+              {
+                "RouteId": "7ae7481f",
+                "RouteKey": "GET /users"
+              },
+              {
+                "RouteId": "f4fb74fd",
+                "RouteKey": "POST /users"
+              },
+              {
+                "RouteId": "1654b0d6",
+                "RouteKey": "GET /orders"
+              },
+              {
+                "RouteId": "0dcfebde",
+                "RouteKey": "GET /health"
+              },
+              {
+                "RouteId": "c3c334cc",
+                "RouteKey": "$default"
+              }
+            ]
+          }
+        ]
+      },
+      "redshift": {
+        "clusters": [
+          {
+            "ClusterIdentifier": "prod-dwh",
+            "NodeType": "ra3.xlplus",
+            "ClusterStatus": "available",
+            "MasterUsername": "admin",
+            "DBName": "datawarehouse",
+            "Endpoint": {
+              "Address": "prod-dwh.a21a0c05.us-east-1.redshift.amazonaws.com",
+              "Port": 5439
+            },
+            "NumberOfNodes": 2,
+            "VpcId": "vpc-a043bae1",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ]
+      },
+      "glue": {
+        "databases": [
+          {
+            "Name": "prod_analytics",
+            "CreateTime": "2025-06-01T00:00:00Z",
+            "LocationUri": "s3://acme-data-lake/analytics/"
+          },
+          {
+            "Name": "prod_raw",
+            "CreateTime": "2025-06-01T00:00:00Z",
+            "LocationUri": "s3://acme-data-lake/raw/"
+          }
+        ],
+        "crawlers": [
+          {
+            "Name": "prod-s3-events-crawler",
+            "State": "READY",
+            "DatabaseName": "prod_raw",
+            "Targets": {
+              "S3Targets": [
+                {
+                  "Path": "s3://acme-data-lake/events/"
+                }
+              ]
+            }
+          },
+          {
+            "Name": "prod-rds-crawler",
+            "State": "READY",
+            "DatabaseName": "prod_analytics",
+            "Targets": {
+              "JdbcTargets": [
+                {
+                  "ConnectionName": "prod-postgres"
+                }
+              ]
+            }
+          }
+        ],
+        "jobs": [
+          {
+            "Name": "prod-etl-transform",
+            "Role": "arn:aws:iam::123456789012:role/glue-service-role",
+            "ExecutionProperty": {
+              "MaxConcurrentRuns": 3
+            },
+            "Command": {
+              "Name": "glueetl",
+              "ScriptLocation": "s3://acme-dev-artifacts/glue/etl-transform.py"
+            }
+          },
+          {
+            "Name": "prod-data-quality",
+            "Role": "arn:aws:iam::123456789012:role/glue-service-role",
+            "ExecutionProperty": {
+              "MaxConcurrentRuns": 1
+            },
+            "Command": {
+              "Name": "glueetl",
+              "ScriptLocation": "s3://acme-dev-artifacts/glue/data-quality.py"
+            }
+          }
+        ]
+      },
+      "cloudtrail": {
+        "trails": [
+          {
+            "Name": "prod-cloudtrail",
+            "S3BucketName": "acme-prod-logs",
+            "IsMultiRegionTrail": true,
+            "HomeRegion": "us-east-1",
+            "HasCustomEventSelectors": true,
+            "LogFileValidationEnabled": true,
+            "TrailARN": "arn:aws:cloudtrail:us-east-1:123456789012:trail/prod-cloudtrail"
+          }
+        ]
+      },
+      "config": {
+        "recorders": [
+          {
+            "name": "default",
+            "roleARN": "arn:aws:iam::123456789012:role/ec2-instance-role",
+            "recordingGroup": {
+              "allSupported": true,
+              "includeGlobalResourceTypes": true
+            }
+          }
+        ],
+        "rules": [
+          {
+            "ConfigRuleName": "encrypted-volumes",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "ENCRYPTED_VOLUMES"
+            }
+          },
+          {
+            "ConfigRuleName": "s3-bucket-public-read-prohibited",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "S3_BUCKET_PUBLIC_READ_PROHIBITED"
+            }
+          },
+          {
+            "ConfigRuleName": "iam-root-access-key-check",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "IAM_ROOT_ACCESS_KEY_CHECK"
+            }
+          },
+          {
+            "ConfigRuleName": "mfa-enabled-for-iam-console-access",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "MFA_ENABLED_FOR_IAM_CONSOLE_ACCESS"
+            }
+          },
+          {
+            "ConfigRuleName": "rds-storage-encrypted",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "RDS_STORAGE_ENCRYPTED"
+            }
+          }
+        ]
+      },
+      "wafv2": {
+        "web_acls": [
+          {
+            "Name": "main-waf",
+            "Id": "2e563ce5842eff4dc71c3aa6d816415b46a5",
+            "ARN": "arn:aws:wafv2:us-east-1:123456789012:regional/webacl/main-waf/2e563ce5842eff4dc71c3aa6d816415b46a5",
+            "Description": "Main WAF protecting ALB and API Gateway",
+            "Capacity": 100
+          }
+        ]
+      },
+      "acm": {
+        "certificates": [
+          {
+            "CertificateArn": "arn:aws:acm:us-east-1:123456789012:certificate/a79f59aa7ba100f13865fb89bead9f4b3735",
+            "DomainName": "acme-corp.com",
+            "Status": "ISSUED"
+          },
+          {
+            "CertificateArn": "arn:aws:acm:us-east-1:123456789012:certificate/f5ea04ffd13af05fc3d89d3cc94ff8c1d25c",
+            "DomainName": "*.acme-corp.com",
+            "Status": "ISSUED"
+          },
+          {
+            "CertificateArn": "arn:aws:acm:us-east-1:123456789012:certificate/9042611759739bea4a0fd61b7e52299b6948",
+            "DomainName": "internal.acme-corp.com",
+            "Status": "ISSUED"
+          }
+        ]
+      },
+      "sagemaker": {
+        "notebooks": [],
+        "endpoints": [
+          {
+            "EndpointName": "prod-recommendation-model",
+            "EndpointArn": "arn:aws:sagemaker:us-east-1:123456789012:endpoint/prod-recommendation-model",
+            "EndpointStatus": "InService",
+            "CreationTime": "2025-09-01T00:00:00Z"
+          }
+        ],
+        "models": [
+          {
+            "ModelName": "prod-recommendation-v2",
+            "ModelArn": "arn:aws:sagemaker:us-east-1:123456789012:model/prod-recommendation-v2",
+            "CreationTime": "2025-08-01T00:00:00Z"
+          }
+        ]
+      },
+      "emr": {
+        "clusters": []
+      },
+      "opensearch": {
+        "domains": [
+          {
+            "DomainName": "prod-search",
+            "ARN": "arn:aws:es:us-east-1:123456789012:domain/prod-search",
+            "DomainId": "123456789012/prod-search",
+            "Endpoint": "search-prod-search-6c1ae8d6e6d6b554fa7116b520.us-east-1.es.amazonaws.com",
+            "EngineVersion": "OpenSearch_2.11",
+            "ClusterConfig": {
+              "InstanceType": "r6g.large.search",
+              "InstanceCount": 3,
+              "DedicatedMasterEnabled": true
+            },
+            "EncryptionAtRestOptions": {
+              "Enabled": true,
+              "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+            },
+            "NodeToNodeEncryptionOptions": {
+              "Enabled": true
+            },
+            "VPCOptions": {
+              "VPCId": "vpc-a043bae1",
+              "SubnetIds": [
+                "subnet-8f68d9d9"
+              ]
+            }
+          }
+        ]
+      },
+      "backup": {
+        "vaults": [
+          {
+            "BackupVaultName": "prod-backup-vault",
+            "BackupVaultArn": "arn:aws:backup:us-east-1:123456789012:backup-vault:prod-backup-vault",
+            "NumberOfRecoveryPoints": 337,
+            "EncryptionKeyArn": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d"
+          }
+        ],
+        "plans": [
+          {
+            "BackupPlanId": "8a6df6e0441827d5814368c9a89ab04ce522",
+            "BackupPlanName": "prod-backup-plan",
+            "BackupPlanArn": "arn:aws:backup:us-east-1:123456789012:backup-plan:a1bf1867245f9e2c0176963851a9843f03fc",
+            "VersionId": "c41762838a56b671566a46f2f7b56166"
+          }
+        ]
+      },
+      "eventbridge": {
+        "event_buses": [
+          {
+            "Name": "default",
+            "Arn": "arn:aws:events:us-east-1:123456789012:event-bus/default"
+          },
+          {
+            "Name": "prod-app-bus",
+            "Arn": "arn:aws:events:us-east-1:123456789012:event-bus/prod-app-bus"
+          }
+        ],
+        "rules": [
+          {
+            "Name": "nightly-cleanup",
+            "Arn": "arn:aws:events:us-east-1:123456789012:rule/nightly-cleanup",
+            "ScheduleExpression": "cron(0 2 * * ? *)",
+            "State": "ENABLED"
+          },
+          {
+            "Name": "hourly-report",
+            "Arn": "arn:aws:events:us-east-1:123456789012:rule/hourly-report",
+            "ScheduleExpression": "rate(1 hour)",
+            "State": "ENABLED"
+          },
+          {
+            "Name": "deployment-completed",
+            "Arn": "arn:aws:events:us-east-1:123456789012:rule/deployment-completed",
+            "EventPattern": "{\"source\":[\"aws.codepipeline\"]}",
+            "State": "ENABLED"
+          },
+          {
+            "Name": "rds-maintenance",
+            "Arn": "arn:aws:events:us-east-1:123456789012:rule/rds-maintenance",
+            "ScheduleExpression": "cron(0 3 ? * SUN *)",
+            "State": "ENABLED"
+          }
+        ]
+      },
+      "efs": {
+        "file_systems": [
+          {
+            "FileSystemId": "fs-1db3c1a8",
+            "FileSystemArn": "arn:aws:elasticfilesystem:us-east-1:123456789012:file-system/fs-1db3c1a8",
+            "Name": "prod-shared-storage",
+            "LifeCycleState": "available",
+            "NumberOfMountTargets": 2,
+            "SizeInBytes": {
+              "Value": 993970255437
+            },
+            "PerformanceMode": "generalPurpose",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1cc2784d",
+            "ThroughputMode": "bursting",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-shared-storage"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ]
+      },
+      "guardduty": {
+        "detector_ids": [
+          "c5fa21422c1fa799aeaf5f577ac95170"
+        ]
+      },
+      "cognito": {
+        "user_pools": [
+          {
+            "Id": "us-east-1_54af1969f",
+            "Name": "prod-users",
+            "Status": "Enabled",
+            "LastModifiedDate": "2025-12-01T00:00:00Z",
+            "details": {
+              "Id": "us-east-1_54af1969f",
+              "Name": "prod-users",
+              "Policies": {
+                "PasswordPolicy": {
+                  "MinimumLength": 12,
+                  "RequireUppercase": true,
+                  "RequireLowercase": true,
+                  "RequireNumbers": true,
+                  "RequireSymbols": true
+                }
+              },
+              "MfaConfiguration": "OPTIONAL",
+              "EstimatedNumberOfUsers": 10376
+            },
+            "clients": [
+              {
+                "ClientId": "7ca57201e5b823778254659ca1",
+                "ClientName": "web-app",
+                "UserPoolId": "us-east-1_54af1969f"
+              },
+              {
+                "ClientId": "1a4baed5925fb69f46cdadba8a",
+                "ClientName": "mobile-app",
+                "UserPoolId": "us-east-1_54af1969f"
+              }
+            ]
+          }
+        ],
+        "identity_pools": [
+          {
+            "IdentityPoolId": "us-east-1:04aac1b7-5ca0-c428-822c-4d326c645c15",
+            "IdentityPoolName": "prod-identity-pool",
+            "AllowUnauthenticatedIdentities": false
+          }
+        ]
+      },
+      "msk": {
+        "clusters": [
+          {
+            "ClusterName": "prod-kafka",
+            "ClusterArn": "arn:aws:kafka:us-east-1:123456789012:cluster/prod-kafka/523f7321d1cde05c262dcc276a374b784c7d",
+            "ClusterType": "PROVISIONED",
+            "State": "ACTIVE",
+            "CreationTime": "2025-04-01T00:00:00Z",
+            "CurrentVersion": "K3P5RAKEXAMPLE",
+            "Tags": {
+              "Environment": "prod"
+            }
+          }
+        ]
+      },
+      "firehose": {
+        "delivery_streams": [
+          {
+            "DeliveryStreamName": "prod-log-delivery",
+            "DeliveryStreamARN": "arn:aws:firehose:us-east-1:123456789012:deliverystream/prod-log-delivery",
+            "DeliveryStreamStatus": "ACTIVE",
+            "DeliveryStreamType": "KinesisStreamAsSource",
+            "Destinations": [
+              {
+                "S3DestinationDescription": {
+                  "BucketARN": "arn:aws:s3::123456789012:acme-data-lake",
+                  "BufferingHints": {
+                    "SizeInMBs": 128,
+                    "IntervalInSeconds": 300
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "batch": {
+        "compute_environments": [
+          {
+            "computeEnvironmentName": "prod-compute-env",
+            "computeEnvironmentArn": "arn:aws:batch:us-east-1:123456789012:compute-environment/prod-compute-env",
+            "state": "ENABLED",
+            "status": "VALID",
+            "type": "MANAGED",
+            "computeResources": {
+              "type": "SPOT",
+              "instanceTypes": [
+                "m5",
+                "c5"
+              ],
+              "maxvCpus": 256,
+              "subnets": [
+                "subnet-8f68d9d9",
+                "subnet-b0341314"
+              ],
+              "securityGroupIds": [
+                "sg-e5a6e743"
+              ]
+            }
+          }
+        ],
+        "job_queues": [
+          {
+            "jobQueueName": "prod-job-queue",
+            "jobQueueArn": "arn:aws:batch:us-east-1:123456789012:job-queue/prod-job-queue",
+            "state": "ENABLED",
+            "status": "VALID",
+            "priority": 10,
+            "computeEnvironmentOrder": [
+              {
+                "order": 1,
+                "computeEnvironment": "arn:aws:batch:us-east-1:123456789012:compute-environment/prod-compute-env"
+              }
+            ]
+          }
+        ],
+        "job_definitions": [
+          {
+            "jobDefinitionName": "prod-etl-job",
+            "jobDefinitionArn": "arn:aws:batch:us-east-1:123456789012:job-definition/prod-etl-job:1",
+            "revision": 1,
+            "status": "ACTIVE",
+            "type": "container",
+            "containerProperties": {
+              "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/prod/data-processor:latest",
+              "vcpus": 4,
+              "memory": 8192
+            }
+          }
+        ]
+      },
+      "codecommit": {
+        "repositories": [
+          {
+            "repositoryId": "92070158-f277-1f63-ada5-84175e2ad32d",
+            "repositoryName": "api",
+            "cloneUrlHttp": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/api"
+          },
+          {
+            "repositoryId": "c4f9eccd-7630-a8a7-70ca-fdd8fc043f08",
+            "repositoryName": "frontend",
+            "cloneUrlHttp": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/frontend"
+          },
+          {
+            "repositoryId": "80be7e35-61c2-645a-c733-230448223120",
+            "repositoryName": "infra",
+            "cloneUrlHttp": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/infra"
+          }
+        ]
+      },
+      "codebuild": {
+        "projects": [
+          {
+            "name": "api-build",
+            "arn": "arn:aws:codebuild:us-east-1:123456789012:project/api-build",
+            "serviceRole": "arn:aws:iam::123456789012:role/codepipeline-role",
+            "environment": {
+              "type": "LINUX_CONTAINER",
+              "image": "aws/codebuild/standard:7.0",
+              "computeType": "BUILD_GENERAL1_SMALL"
+            },
+            "source": {
+              "type": "CODECOMMIT",
+              "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/api"
+            }
+          },
+          {
+            "name": "frontend-build",
+            "arn": "arn:aws:codebuild:us-east-1:123456789012:project/frontend-build",
+            "serviceRole": "arn:aws:iam::123456789012:role/codepipeline-role",
+            "environment": {
+              "type": "LINUX_CONTAINER",
+              "image": "aws/codebuild/standard:7.0",
+              "computeType": "BUILD_GENERAL1_MEDIUM"
+            },
+            "source": {
+              "type": "CODECOMMIT",
+              "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/frontend"
+            }
+          }
+        ]
+      },
+      "codepipeline": {
+        "pipelines": [
+          {
+            "name": "api-pipeline",
+            "roleArn": "arn:aws:iam::123456789012:role/codepipeline-role",
+            "stages": [
+              {
+                "name": "Source"
+              },
+              {
+                "name": "Build"
+              },
+              {
+                "name": "Test"
+              },
+              {
+                "name": "Deploy-ECS"
+              }
+            ]
+          },
+          {
+            "name": "frontend-pipeline",
+            "roleArn": "arn:aws:iam::123456789012:role/codepipeline-role",
+            "stages": [
+              {
+                "name": "Source"
+              },
+              {
+                "name": "Build"
+              },
+              {
+                "name": "Deploy-S3"
+              }
+            ]
+          }
+        ]
+      },
+      "appsync": {
+        "graphql_apis": [
+          {
+            "apiId": "8fdc24ad81dd4c4e26f3750083",
+            "name": "prod-graphql-api",
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "arn": "arn:aws:appsync:us-east-1:123456789012:apis/8fdc24ad81dd4c4e26f3750083",
+            "uris": {
+              "GRAPHQL": "https://8fdc24ad81dd4c4e26f3750083.appsync-api.us-east-1.amazonaws.com/graphql"
+            },
+            "tags": {
+              "Environment": "prod"
+            }
+          }
+        ]
+      },
+      "apprunner": {
+        "services": [
+          {
+            "ServiceName": "prod-payments-api",
+            "ServiceArn": "arn:aws:apprunner:us-east-1:123456789012:service/prod-payments-api/f50edac24db2b7014d8b814406c71e90",
+            "ServiceUrl": "8326936a1f18.us-east-1.awsapprunner.com",
+            "Status": "RUNNING",
+            "CreatedAt": "2025-10-01T00:00:00Z"
+          }
+        ]
+      },
+      "securityhub": {
+        "hub": {
+          "HubArn": "arn:aws:securityhub:us-east-1:123456789012:hub/default",
+          "SubscribedAt": "2025-01-01T00:00:00Z",
+          "AutoEnableControls": true
+        },
+        "standards": [
+          {
+            "StandardsSubscriptionArn": "arn:aws:securityhub:us-east-1:123456789012:subscription/aws-foundational-security-best-practices/v/1.0.0",
+            "StandardsArn": "arn:aws:securityhub:us-east-1::standards/aws-foundational-security-best-practices/v/1.0.0",
+            "StandardsStatus": "READY"
+          },
+          {
+            "StandardsSubscriptionArn": "arn:aws:securityhub:us-east-1:123456789012:subscription/cis-aws-foundations-benchmark/v/1.4.0",
+            "StandardsArn": "arn:aws:securityhub:us-east-1::standards/cis-aws-foundations-benchmark/v/1.4.0",
+            "StandardsStatus": "READY"
+          }
+        ],
+        "products": []
+      },
+      "lightsail": {
+        "instances": [],
+        "load_balancers": [],
+        "databases": [],
+        "buckets": []
+      },
+      "inspector": {
+        "coverage": [
+          {
+            "resourceId": {
+              "ec2InstanceTags": {
+                "Name": "app-server-1"
+              }
+            },
+            "resourceType": "AWS_EC2_INSTANCE",
+            "scanType": "PACKAGE",
+            "scanStatus": {
+              "statusCode": "ACTIVE"
+            }
+          },
+          {
+            "resourceId": {
+              "ec2InstanceTags": {
+                "Name": "app-server-2"
+              }
+            },
+            "resourceType": "AWS_EC2_INSTANCE",
+            "scanType": "PACKAGE",
+            "scanStatus": {
+              "statusCode": "ACTIVE"
+            }
+          },
+          {
+            "resourceId": {
+              "lambdaFunctionName": "api-handler"
+            },
+            "resourceType": "AWS_LAMBDA_FUNCTION",
+            "scanType": "PACKAGE",
+            "scanStatus": {
+              "statusCode": "ACTIVE"
+            }
+          },
+          {
+            "resourceId": {
+              "lambdaFunctionName": "event-processor"
+            },
+            "resourceType": "AWS_LAMBDA_FUNCTION",
+            "scanType": "PACKAGE",
+            "scanStatus": {
+              "statusCode": "ACTIVE"
+            }
+          }
+        ]
+      },
+      "macie": {
+        "status": {
+          "Status": "ENABLED",
+          "FindingPublishingFrequency": "FIFTEEN_MINUTES",
+          "ServiceRole": "arn:aws:iam::123456789012:role/AWSServiceRoleForAmazonMacie"
+        },
+        "findings": []
+      }
+    },
+    "eu-west-1": {
+      "ec2": {
+        "instances": [
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-fed4a824",
+                "InstanceType": "t3.nano",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "bastion-prod"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "bastion"
+                  }
+                ],
+                "VpcId": "vpc-8f867af4",
+                "SubnetId": "subnet-08d2c7ba",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-8447f4e7",
+                    "GroupName": "bastion-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.100.1.5",
+                "PublicIpAddress": "54.137.24.129",
+                "KeyName": "prod-keypair"
+              }
+            ]
+          },
+          {
+            "Instances": [
+              {
+                "InstanceId": "i-a9929e5e",
+                "InstanceType": "t3.medium",
+                "State": {
+                  "Name": "running"
+                },
+                "Tags": [
+                  {
+                    "Key": "Name",
+                    "Value": "app-server-1"
+                  },
+                  {
+                    "Key": "Environment",
+                    "Value": "prod"
+                  },
+                  {
+                    "Key": "Role",
+                    "Value": "app"
+                  }
+                ],
+                "VpcId": "vpc-8f867af4",
+                "SubnetId": "subnet-e8f84c35",
+                "SecurityGroups": [
+                  {
+                    "GroupId": "sg-4ff1a5ca",
+                    "GroupName": "app-sg"
+                  }
+                ],
+                "PrivateIpAddress": "10.100.3.11",
+                "IamInstanceProfile": {
+                  "Arn": "arn:aws:iam::123456789012:instance-profile/ec2-instance-profile"
+                },
+                "KeyName": "prod-keypair"
+              }
+            ]
+          }
+        ],
+        "vpcs": [
+          {
+            "VpcId": "vpc-8f867af4",
+            "CidrBlock": "10.100.0.0/16",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-main-vpc"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "State": "available",
+            "IsDefault": false
+          },
+          {
+            "VpcId": "vpc-0c5bacb5",
+            "CidrBlock": "10.100.10.0/20",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-data-vpc"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "State": "available",
+            "IsDefault": false
+          }
+        ],
+        "subnets": [
+          {
+            "SubnetId": "subnet-08d2c7ba",
+            "VpcId": "vpc-8f867af4",
+            "CidrBlock": "10.100.1.0/24",
+            "AvailabilityZone": "eu-west-1a",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "public-a"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": true
+          },
+          {
+            "SubnetId": "subnet-c1c74030",
+            "VpcId": "vpc-8f867af4",
+            "CidrBlock": "10.100.2.0/24",
+            "AvailabilityZone": "eu-west-1b",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "public-b"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": true
+          },
+          {
+            "SubnetId": "subnet-e8f84c35",
+            "VpcId": "vpc-8f867af4",
+            "CidrBlock": "10.100.3.0/24",
+            "AvailabilityZone": "eu-west-1a",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "private-a"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          },
+          {
+            "SubnetId": "subnet-cd515ebe",
+            "VpcId": "vpc-8f867af4",
+            "CidrBlock": "10.100.4.0/24",
+            "AvailabilityZone": "eu-west-1b",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "private-b"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          },
+          {
+            "SubnetId": "subnet-6f77e8cb",
+            "VpcId": "vpc-0c5bacb5",
+            "CidrBlock": "10.100.10.0/25",
+            "AvailabilityZone": "eu-west-1a",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-a"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          },
+          {
+            "SubnetId": "subnet-19d851a4",
+            "VpcId": "vpc-0c5bacb5",
+            "CidrBlock": "10.100.10.128/25",
+            "AvailabilityZone": "eu-west-1b",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-b"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "MapPublicIpOnLaunch": false
+          }
+        ],
+        "security_groups": [
+          {
+            "GroupId": "sg-96b50d5f",
+            "GroupName": "alb-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "ALB security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "alb-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 80,
+                "ToPort": 80,
+                "IpProtocol": "tcp",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              },
+              {
+                "FromPort": 443,
+                "ToPort": 443,
+                "IpProtocol": "tcp",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-4ff1a5ca",
+            "GroupName": "app-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "App server security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 8080,
+                "ToPort": 8080,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-96b50d5f",
+                    "UserId": "123456789012"
+                  }
+                ]
+              },
+              {
+                "FromPort": 22,
+                "ToPort": 22,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-8447f4e7",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-f29c01c5",
+            "GroupName": "db-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "Database security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "db-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 5432,
+                "ToPort": 5432,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-4ff1a5ca",
+                    "UserId": "123456789012"
+                  }
+                ]
+              },
+              {
+                "FromPort": 3306,
+                "ToPort": 3306,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-4ff1a5ca",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": []
+          },
+          {
+            "GroupId": "sg-699af5c9",
+            "GroupName": "cache-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "ElastiCache security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "cache-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 6379,
+                "ToPort": 6379,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-4ff1a5ca",
+                    "UserId": "123456789012"
+                  }
+                ]
+              },
+              {
+                "FromPort": 6379,
+                "ToPort": 6379,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-86a31b76",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": []
+          },
+          {
+            "GroupId": "sg-86a31b76",
+            "GroupName": "lambda-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "Lambda VPC security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "lambda-sg"
+              }
+            ],
+            "IpPermissions": [],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-8447f4e7",
+            "GroupName": "bastion-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "Bastion SSH access",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "bastion-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 22,
+                "ToPort": 22,
+                "IpProtocol": "tcp",
+                "IpRanges": [
+                  {
+                    "CidrIp": "203.0.113.0/24",
+                    "Description": "Corporate VPN"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-1d7e71ad",
+            "GroupName": "eks-cluster-sg",
+            "VpcId": "vpc-8f867af4",
+            "Description": "EKS cluster security group",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "eks-cluster-sg"
+              }
+            ],
+            "IpPermissions": [
+              {
+                "FromPort": 443,
+                "ToPort": 443,
+                "IpProtocol": "tcp",
+                "UserIdGroupPairs": [
+                  {
+                    "GroupId": "sg-4ff1a5ca",
+                    "UserId": "123456789012"
+                  }
+                ]
+              }
+            ],
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "internet_gateways": [
+          {
+            "InternetGatewayId": "igw-5518edbe",
+            "Attachments": [
+              {
+                "VpcId": "vpc-8f867af4",
+                "State": "attached"
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-igw"
+              }
+            ]
+          }
+        ],
+        "nat_gateways": [
+          {
+            "NatGatewayId": "nat-ac8132c0",
+            "VpcId": "vpc-8f867af4",
+            "SubnetId": "subnet-08d2c7ba",
+            "State": "available",
+            "ConnectivityType": "public",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-nat"
+              }
+            ]
+          }
+        ],
+        "elastic_ips": [
+          {
+            "PublicIp": "52.62.120.32",
+            "AllocationId": "eipalloc-4314693d",
+            "Domain": "vpc",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "nat-eip"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "VolumeId": "vol-2595c787",
+            "Size": 20,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "AvailabilityZone": "eu-west-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "bastion-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ],
+            "Attachments": [
+              {
+                "InstanceId": "i-fed4a824",
+                "Device": "/dev/xvda",
+                "State": "attached"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-40f8f350",
+            "Size": 100,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "AvailabilityZone": "eu-west-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-1-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-7ea78d6e",
+            "Size": 100,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "AvailabilityZone": "eu-west-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-2-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-bc569381",
+            "Size": 100,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "AvailabilityZone": "eu-west-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "app-3-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-8c4fa1f6",
+            "Size": 50,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "AvailabilityZone": "eu-west-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-proc-root"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "VolumeId": "vol-c5fc3880",
+            "Size": 1000,
+            "State": "in-use",
+            "Encrypted": true,
+            "KmsKeyId": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "AvailabilityZone": "eu-west-1a",
+            "VolumeType": "gp3",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "data-proc-data"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "key_pairs": [
+          {
+            "KeyName": "prod-keypair",
+            "KeyPairId": "key-pair-25779859",
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "snapshots": [],
+        "amis": [],
+        "network_interfaces": [],
+        "route_tables": [
+          {
+            "RouteTableId": "rtb-2fb45d8b",
+            "VpcId": "vpc-8f867af4",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "public-rt"
+              }
+            ],
+            "Routes": [
+              {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": "igw-5518edbe",
+                "State": "active"
+              }
+            ]
+          },
+          {
+            "RouteTableId": "rtb-4d5af9cb",
+            "VpcId": "vpc-8f867af4",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "private-rt"
+              }
+            ],
+            "Routes": [
+              {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "NatGatewayId": "nat-ac8132c0",
+                "State": "active"
+              }
+            ]
+          }
+        ],
+        "vpc_endpoints": [
+          {
+            "VpcEndpointId": "vpce-b07fcc9b",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-8f867af4",
+            "ServiceName": "com.amazonaws.eu-west-1.s3",
+            "State": "available"
+          },
+          {
+            "VpcEndpointId": "vpce-92a9d2a0",
+            "VpcEndpointType": "Interface",
+            "VpcId": "vpc-8f867af4",
+            "ServiceName": "com.amazonaws.eu-west-1.secretsmanager",
+            "State": "available"
+          }
+        ],
+        "vpc_peering_connections": [],
+        "transit_gateways": [],
+        "launch_templates": [
+          {
+            "LaunchTemplateId": "lt-f1052b6c",
+            "LaunchTemplateName": "prod-app-lt",
+            "DefaultVersionNumber": 3,
+            "LatestVersionNumber": 3,
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "placement_groups": [],
+        "flow_logs": [
+          {
+            "FlowLogId": "fl-edb0235a",
+            "ResourceId": "vpc-8f867af4",
+            "TrafficType": "ALL",
+            "LogDestinationType": "cloud-watch-logs",
+            "LogGroupName": "/aws/vpc/flowlogs/prod",
+            "DeliverLogsStatus": "SUCCESS"
+          }
+        ],
+        "network_acls": [
+          {
+            "NetworkAclId": "acl-852e55cb",
+            "VpcId": "vpc-8f867af4",
+            "IsDefault": true,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-default-acl"
+              }
+            ]
+          },
+          {
+            "NetworkAclId": "acl-ab93383f",
+            "VpcId": "vpc-8f867af4",
+            "IsDefault": false,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-db-acl"
+              }
+            ]
+          }
+        ],
+        "vpn_connections": [],
+        "vpn_gateways": [],
+        "customer_gateways": [],
+        "transit_gateway_attachments": [],
+        "dhcp_options": [
+          {
+            "DhcpOptionsId": "dopt-443b55ec",
+            "DhcpConfigurations": [
+              {
+                "Key": "domain-name-servers",
+                "Values": [
+                  {
+                    "Value": "AmazonProvidedDNS"
+                  }
+                ]
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-dhcp"
+              }
+            ]
+          }
+        ]
+      },
+      "rds": {
+        "db_instances": [
+          {
+            "DBInstanceIdentifier": "prod-postgres-01",
+            "DBInstanceClass": "db.r6g.large",
+            "Engine": "postgres",
+            "EngineVersion": "15.4",
+            "DBInstanceStatus": "available",
+            "Endpoint": {
+              "Address": "prod-postgres-01.41a6fdfc.eu-west-1.rds.amazonaws.com",
+              "Port": 5432
+            },
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-f29c01c5",
+                "Status": "active"
+              }
+            ],
+            "DBSubnetGroup": {
+              "DBSubnetGroupName": "prod-db-subnet-group",
+              "VpcId": "vpc-8f867af4"
+            },
+            "MultiAZ": true,
+            "StorageEncrypted": true,
+            "AllocatedStorage": 200,
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-postgres-01"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "db_clusters": [],
+        "db_snapshots": [],
+        "db_subnet_groups": [
+          {
+            "DBSubnetGroupName": "prod-db-subnet-group",
+            "VpcId": "vpc-8f867af4",
+            "Subnets": [
+              {
+                "SubnetIdentifier": "subnet-e8f84c35",
+                "SubnetAvailabilityZone": {
+                  "Name": "eu-west-1a"
+                }
+              },
+              {
+                "SubnetIdentifier": "subnet-cd515ebe",
+                "SubnetAvailabilityZone": {
+                  "Name": "eu-west-1b"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "lambda": {
+        "functions": [
+          {
+            "FunctionName": "api-handler",
+            "FunctionArn": "arn:aws:lambda:eu-west-1:123456789012:function:api-handler",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 21603199,
+            "Timeout": 60,
+            "MemorySize": 128,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {
+              "VpcId": "vpc-8f867af4",
+              "SubnetIds": [
+                "subnet-e8f84c35",
+                "subnet-cd515ebe"
+              ],
+              "SecurityGroupIds": [
+                "sg-86a31b76"
+              ]
+            },
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "eu-west-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "api"
+            },
+            "policy": {},
+            "event_source_mappings": []
+          },
+          {
+            "FunctionName": "event-processor",
+            "FunctionArn": "arn:aws:lambda:eu-west-1:123456789012:function:event-processor",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::123456789012:role/lambda-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 6053607,
+            "Timeout": 300,
+            "MemorySize": 256,
+            "LastModified": "2026-01-15T10:00:00.000+0000",
+            "VpcConfig": {
+              "VpcId": "vpc-8f867af4",
+              "SubnetIds": [
+                "subnet-e8f84c35",
+                "subnet-cd515ebe"
+              ],
+              "SecurityGroupIds": [
+                "sg-86a31b76"
+              ]
+            },
+            "Environment": {
+              "Variables": {
+                "ENV": "prod",
+                "REGION": "eu-west-1"
+              }
+            },
+            "Tags": {
+              "Environment": "prod",
+              "Purpose": "processing"
+            },
+            "policy": {},
+            "event_source_mappings": [
+              {
+                "EventSourceArn": "arn:aws:sqs:eu-west-1:123456789012:prod-task-queue",
+                "FunctionArn": "arn:aws:lambda:eu-west-1:123456789012:function:event-processor",
+                "State": "Enabled",
+                "BatchSize": 10
+              }
+            ]
+          }
+        ]
+      },
+      "elb": {
+        "load_balancers_v2": [
+          {
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:eu-west-1:123456789012:loadbalancer/app/prod-alb/b8cd1fa7a5eca2f6",
+            "LoadBalancerName": "prod-alb",
+            "DNSName": "prod-alb-e01225b5.eu-west-1.elb.amazonaws.com",
+            "Type": "application",
+            "Scheme": "internet-facing",
+            "VpcId": "vpc-8f867af4",
+            "SecurityGroups": [
+              "sg-96b50d5f"
+            ],
+            "AvailabilityZones": [
+              {
+                "SubnetId": "subnet-08d2c7ba",
+                "ZoneName": "eu-west-1a"
+              },
+              {
+                "SubnetId": "subnet-c1c74030",
+                "ZoneName": "eu-west-1b"
+              }
+            ],
+            "State": {
+              "Code": "active"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "target_groups": [
+          {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-1:123456789012:targetgroup/api-tg/b41e49322b96878a",
+            "TargetGroupName": "api-tg",
+            "Protocol": "HTTP",
+            "Port": 8080,
+            "VpcId": "vpc-8f867af4",
+            "TargetType": "ip",
+            "LoadBalancerArns": [
+              "arn:aws:elasticloadbalancing:eu-west-1:123456789012:loadbalancer/app/prod-alb/b8cd1fa7a5eca2f6"
+            ]
+          },
+          {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-1:123456789012:targetgroup/web-tg/33cd17b190889258",
+            "TargetGroupName": "web-tg",
+            "Protocol": "HTTP",
+            "Port": 80,
+            "VpcId": "vpc-8f867af4",
+            "TargetType": "ip",
+            "LoadBalancerArns": [
+              "arn:aws:elasticloadbalancing:eu-west-1:123456789012:loadbalancer/app/prod-alb/b8cd1fa7a5eca2f6"
+            ]
+          }
+        ],
+        "classic_load_balancers": []
+      },
+      "autoscaling": {
+        "auto_scaling_groups": [
+          {
+            "AutoScalingGroupName": "prod-app-asg",
+            "AutoScalingGroupARN": "arn:aws:autoscaling:eu-west-1:123456789012:autoScalingGroup::AutoScalingGroupName/prod-app-asg",
+            "LaunchTemplate": {
+              "LaunchTemplateName": "prod-app-lt",
+              "Version": "$Latest"
+            },
+            "MinSize": 2,
+            "MaxSize": 10,
+            "DesiredCapacity": 3,
+            "AvailabilityZones": [
+              "eu-west-1a",
+              "eu-west-1b"
+            ],
+            "VPCZoneIdentifier": "subnet-e8f84c35,subnet-cd515ebe",
+            "HealthCheckType": "ELB",
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "prod-app-asg"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ],
+        "launch_configurations": []
+      },
+      "dynamodb": {
+        "tables": [
+          {
+            "TableName": "prod-users",
+            "TableArn": "arn:aws:dynamodb:eu-west-1:123456789012:table/prod-users",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 15602495,
+            "ItemCount": 713441,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          },
+          {
+            "TableName": "prod-sessions",
+            "TableArn": "arn:aws:dynamodb:eu-west-1:123456789012:table/prod-sessions",
+            "TableStatus": "ACTIVE",
+            "TableSizeBytes": 27569544,
+            "ItemCount": 751842,
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            "SSEDescription": {
+              "Status": "ENABLED",
+              "SSEType": "KMS",
+              "KMSMasterKeyArn": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f"
+            },
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              }
+            ]
+          }
+        ]
+      },
+      "sqs": {
+        "queues": [
+          {
+            "url": "https://sqs.eu-west-1.amazonaws.com/123456789012/prod-task-queue",
+            "attributes": {
+              "QueueArn": "arn:aws:sqs:eu-west-1:123456789012:prod-task-queue",
+              "ApproximateNumberOfMessages": "414",
+              "VisibilityTimeout": "30",
+              "MessageRetentionPeriod": "1209600",
+              "ReceiveMessageWaitTimeSeconds": "20",
+              "KmsMasterKeyId": "85c8914f"
+            }
+          },
+          {
+            "url": "https://sqs.eu-west-1.amazonaws.com/123456789012/prod-task-queue-dlq",
+            "attributes": {
+              "QueueArn": "arn:aws:sqs:eu-west-1:123456789012:prod-task-queue-dlq",
+              "ApproximateNumberOfMessages": "28",
+              "VisibilityTimeout": "30",
+              "MessageRetentionPeriod": "1209600",
+              "ReceiveMessageWaitTimeSeconds": "20",
+              "KmsMasterKeyId": "85c8914f"
+            }
+          },
+          {
+            "url": "https://sqs.eu-west-1.amazonaws.com/123456789012/prod-notification-queue",
+            "attributes": {
+              "QueueArn": "arn:aws:sqs:eu-west-1:123456789012:prod-notification-queue",
+              "ApproximateNumberOfMessages": "232",
+              "VisibilityTimeout": "30",
+              "MessageRetentionPeriod": "1209600",
+              "ReceiveMessageWaitTimeSeconds": "20",
+              "KmsMasterKeyId": "85c8914f"
+            }
+          }
+        ]
+      },
+      "sns": {
+        "topics": [
+          {
+            "TopicArn": "arn:aws:sns:eu-west-1:123456789012:prod-alerts",
+            "attributes": {
+              "TopicArn": "arn:aws:sns:eu-west-1:123456789012:prod-alerts",
+              "DisplayName": "prod Alerts",
+              "KmsMasterKeyId": "85c8914f"
+            },
+            "subscriptions": [
+              {
+                "SubscriptionArn": "arn:aws:sns:eu-west-1:123456789012:prod-alerts:2698a404",
+                "Protocol": "email",
+                "Endpoint": "ops@acme-corp.com"
+              },
+              {
+                "SubscriptionArn": "arn:aws:sns:eu-west-1:123456789012:prod-alerts:0316b80e",
+                "Protocol": "sqs",
+                "Endpoint": "arn:aws:sqs:eu-west-1:123456789012:prod-task-queue"
+              }
+            ]
+          },
+          {
+            "TopicArn": "arn:aws:sns:eu-west-1:123456789012:prod-deployments",
+            "attributes": {
+              "TopicArn": "arn:aws:sns:eu-west-1:123456789012:prod-deployments",
+              "DisplayName": "prod Deployments",
+              "KmsMasterKeyId": "85c8914f"
+            },
+            "subscriptions": [
+              {
+                "SubscriptionArn": "arn:aws:sns:eu-west-1:123456789012:prod-deployments:f7422abf",
+                "Protocol": "email",
+                "Endpoint": "ops@acme-corp.com"
+              },
+              {
+                "SubscriptionArn": "arn:aws:sns:eu-west-1:123456789012:prod-deployments:5e7e61fd",
+                "Protocol": "sqs",
+                "Endpoint": "arn:aws:sqs:eu-west-1:123456789012:prod-task-queue"
+              }
+            ]
+          },
+          {
+            "TopicArn": "arn:aws:sns:eu-west-1:123456789012:prod-user-notifications",
+            "attributes": {
+              "TopicArn": "arn:aws:sns:eu-west-1:123456789012:prod-user-notifications",
+              "DisplayName": "prod User Notifications",
+              "KmsMasterKeyId": "85c8914f"
+            },
+            "subscriptions": [
+              {
+                "SubscriptionArn": "arn:aws:sns:eu-west-1:123456789012:prod-user-notifications:2d1f62fd",
+                "Protocol": "email",
+                "Endpoint": "ops@acme-corp.com"
+              },
+              {
+                "SubscriptionArn": "arn:aws:sns:eu-west-1:123456789012:prod-user-notifications:cf7b6637",
+                "Protocol": "sqs",
+                "Endpoint": "arn:aws:sqs:eu-west-1:123456789012:prod-task-queue"
+              }
+            ]
+          }
+        ]
+      },
+      "cloudwatch": {
+        "alarms": [
+          {
+            "AlarmName": "HighCPU-app",
+            "MetricName": "CPUUtilization",
+            "Namespace": "AWS/EC2",
+            "Threshold": 80,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          },
+          {
+            "AlarmName": "RDS-connections",
+            "MetricName": "DatabaseConnections",
+            "Namespace": "AWS/RDS",
+            "Threshold": 100,
+            "StateValue": "OK",
+            "ComparisonOperator": "GreaterThanThreshold"
+          }
+        ],
+        "dashboards": [
+          {
+            "DashboardName": "prod-overview"
+          },
+          {
+            "DashboardName": "prod-data-pipeline"
+          }
+        ]
+      },
+      "cloudwatch_logs": {
+        "log_groups": [
+          {
+            "logGroupName": "/aws/lambda/api-handler",
+            "retentionInDays": 30
+          },
+          {
+            "logGroupName": "/aws/lambda/event-processor",
+            "retentionInDays": 30
+          },
+          {
+            "logGroupName": "/aws/lambda/auth-authorizer",
+            "retentionInDays": 30
+          }
+        ]
+      },
+      "cloudformation": {
+        "stacks": [
+          {
+            "StackName": "acme-network",
+            "StackId": "arn:aws:cloudformation:eu-west-1:123456789012:stack/acme-network/23ec0a9ee3197ad3078cc2f3e99cd3ef8648",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-app",
+            "StackId": "arn:aws:cloudformation:eu-west-1:123456789012:stack/acme-app/9b2a805a68b642833d2706686451758d0690",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-data",
+            "StackId": "arn:aws:cloudformation:eu-west-1:123456789012:stack/acme-data/1c9a33e4e33bbcebb63547a45e7cbc5350db",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-monitoring",
+            "StackId": "arn:aws:cloudformation:eu-west-1:123456789012:stack/acme-monitoring/089b433938f5c7bb7b5282eff8d1d002a123",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          },
+          {
+            "StackName": "acme-iam",
+            "StackId": "arn:aws:cloudformation:eu-west-1:123456789012:stack/acme-iam/70aeea0860b848b6f2e83945c1f73b4d1fa0",
+            "StackStatus": "UPDATE_COMPLETE",
+            "CreationTime": "2025-01-01T00:00:00Z",
+            "LastUpdatedTime": "2026-01-15T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "acme"
+              },
+              {
+                "Key": "Environment",
+                "Value": "prod"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "terraform"
+              }
+            ]
+          }
+        ]
+      },
+      "secrets_manager": {
+        "secrets": [
+          {
+            "Name": "prod/db/postgres-password",
+            "ARN": "arn:aws:secretsmanager:eu-west-1:123456789012:secret:prod/db/postgres-password-667ab1"
+          },
+          {
+            "Name": "prod/db/mysql-password",
+            "ARN": "arn:aws:secretsmanager:eu-west-1:123456789012:secret:prod/db/mysql-password-da5ffe"
+          },
+          {
+            "Name": "prod/api/stripe-key",
+            "ARN": "arn:aws:secretsmanager:eu-west-1:123456789012:secret:prod/api/stripe-key-e3eb94"
+          },
+          {
+            "Name": "prod/api/jwt-secret",
+            "ARN": "arn:aws:secretsmanager:eu-west-1:123456789012:secret:prod/api/jwt-secret-ea48a2"
+          },
+          {
+            "Name": "prod/kafka/sasl-password",
+            "ARN": "arn:aws:secretsmanager:eu-west-1:123456789012:secret:prod/kafka/sasl-password-d032dd"
+          }
+        ]
+      },
+      "ssm": {
+        "parameters": [
+          {
+            "Name": "/prod/app/db-host",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/app/db-name",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/app/redis-host",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/app/feature-flags",
+            "Type": "String",
+            "LastModifiedDate": "2026-01-15T00:00:00Z"
+          },
+          {
+            "Name": "/prod/keys/internal-api",
+            "Type": "SecureString",
+            "LastModifiedDate": "2026-01-01T00:00:00Z"
+          },
+          {
+            "Name": "/prod/kafka/broker-list",
+            "Type": "String",
+            "LastModifiedDate": "2025-12-01T00:00:00Z"
+          }
+        ]
+      },
+      "kms": {
+        "keys": [
+          {
+            "KeyId": "85c8914f",
+            "Arn": "arn:aws:kms:eu-west-1:123456789012:key/85c8914f",
+            "Description": "prod master encryption key",
+            "KeyState": "Enabled",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeySpec": "SYMMETRIC_DEFAULT",
+            "Origin": "AWS_KMS",
+            "MultiRegion": false
+          },
+          {
+            "KeyId": "e499da86",
+            "Arn": "arn:aws:kms:eu-west-1:123456789012:key/bcb1b513",
+            "Description": "RDS encryption key",
+            "KeyState": "Enabled",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeySpec": "SYMMETRIC_DEFAULT"
+          },
+          {
+            "KeyId": "1999f5ac",
+            "Arn": "arn:aws:kms:eu-west-1:123456789012:key/7386296c",
+            "Description": "S3 data lake encryption key",
+            "KeyState": "Enabled",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeySpec": "SYMMETRIC_DEFAULT"
+          }
+        ]
+      },
+      "ecr": {
+        "repositories": [
+          {
+            "repositoryName": "prod/api-service",
+            "repositoryArn": "arn:aws:ecr:eu-west-1:123456789012:repository/prod/api-service",
+            "repositoryUri": "123456789012.dkr.ecr.eu-west-1.amazonaws.com/prod/api-service",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/worker",
+            "repositoryArn": "arn:aws:ecr:eu-west-1:123456789012:repository/prod/worker",
+            "repositoryUri": "123456789012.dkr.ecr.eu-west-1.amazonaws.com/prod/worker",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/frontend",
+            "repositoryArn": "arn:aws:ecr:eu-west-1:123456789012:repository/prod/frontend",
+            "repositoryUri": "123456789012.dkr.ecr.eu-west-1.amazonaws.com/prod/frontend",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/data-processor",
+            "repositoryArn": "arn:aws:ecr:eu-west-1:123456789012:repository/prod/data-processor",
+            "repositoryUri": "123456789012.dkr.ecr.eu-west-1.amazonaws.com/prod/data-processor",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          },
+          {
+            "repositoryName": "prod/auth-service",
+            "repositoryArn": "arn:aws:ecr:eu-west-1:123456789012:repository/prod/auth-service",
+            "repositoryUri": "123456789012.dkr.ecr.eu-west-1.amazonaws.com/prod/auth-service",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": true
+            },
+            "images": [
+              {
+                "imageTag": "latest"
+              },
+              {
+                "imageTag": "v1.3.0"
+              },
+              {
+                "imageTag": "v1.2.9"
+              }
+            ]
+          }
+        ]
+      },
+      "cloudtrail": {
+        "trails": [
+          {
+            "Name": "prod-cloudtrail",
+            "S3BucketName": "acme-prod-logs",
+            "IsMultiRegionTrail": true,
+            "HomeRegion": "eu-west-1",
+            "HasCustomEventSelectors": true,
+            "LogFileValidationEnabled": true,
+            "TrailARN": "arn:aws:cloudtrail:eu-west-1:123456789012:trail/prod-cloudtrail"
+          }
+        ]
+      },
+      "config": {
+        "recorders": [
+          {
+            "name": "default",
+            "roleARN": "arn:aws:iam::123456789012:role/ec2-instance-role",
+            "recordingGroup": {
+              "allSupported": true,
+              "includeGlobalResourceTypes": true
+            }
+          }
+        ],
+        "rules": [
+          {
+            "ConfigRuleName": "encrypted-volumes",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "ENCRYPTED_VOLUMES"
+            }
+          },
+          {
+            "ConfigRuleName": "s3-bucket-public-read-prohibited",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "S3_BUCKET_PUBLIC_READ_PROHIBITED"
+            }
+          },
+          {
+            "ConfigRuleName": "iam-root-access-key-check",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "IAM_ROOT_ACCESS_KEY_CHECK"
+            }
+          },
+          {
+            "ConfigRuleName": "mfa-enabled-for-iam-console-access",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "MFA_ENABLED_FOR_IAM_CONSOLE_ACCESS"
+            }
+          },
+          {
+            "ConfigRuleName": "rds-storage-encrypted",
+            "ConfigRuleState": "ACTIVE",
+            "Source": {
+              "Owner": "AWS",
+              "SourceIdentifier": "RDS_STORAGE_ENCRYPTED"
+            }
+          }
+        ]
+      },
+      "acm": {
+        "certificates": [
+          {
+            "CertificateArn": "arn:aws:acm:eu-west-1:123456789012:certificate/1a7f5661572ace9a53152699678ee2242d9d",
+            "DomainName": "acme-corp.com",
+            "Status": "ISSUED"
+          },
+          {
+            "CertificateArn": "arn:aws:acm:eu-west-1:123456789012:certificate/f7368a67b729c3034c9c78948f8cc736ba3d",
+            "DomainName": "*.acme-corp.com",
+            "Status": "ISSUED"
+          },
+          {
+            "CertificateArn": "arn:aws:acm:eu-west-1:123456789012:certificate/04d1d1c3bbd969cdc9892f49f8ed2c604ab2",
+            "DomainName": "internal.acme-corp.com",
+            "Status": "ISSUED"
+          }
+        ]
+      },
+      "guardduty": {
+        "detector_ids": [
+          "01400c8a86b1894483c86ada1bbd0167"
+        ]
+      }
+    }
+  },
+  "errors": {
+    "global": [],
+    "regional": {}
+  }
+}
