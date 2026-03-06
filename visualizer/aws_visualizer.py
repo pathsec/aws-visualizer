@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AWS Inventory Visualizer — Flask Server
+AWS Visualizer
 ========================================
 Usage:
     python app.py [path/to/aws_inventory.json ...] [--port 8080]
